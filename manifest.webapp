@@ -1,0 +1,46 @@
+{
+    "version": "0.1.0",
+    "name": "12AM",
+    "description": "XiaoYuZhou FM App for KaiOS",
+    "launch_path": "/index.html",
+    "icons": {
+        "56": "/assets/icons/56px.png",
+        "84": "/assets/icons/84px.png",
+        "112": "/assets/icons/112px.png"
+    },
+    "developer": {
+        "name": "Liya Du",
+        "url": "https://liya.design/"
+    },
+    "categories": ["social"],
+    "locales": {
+        "en-US": {
+            "name": "12AM",
+            "subtitle": "XiaoYuZhou FM App for KaiOS",
+            "description": "XiaoYuZhou FM App for KaiOS"
+        }
+    },
+    "default_locale": "en-US",
+    "origin": "app://kaios.liya.design",
+    "permissions": {
+        "audio-channel-content": {
+            "description": "Required to play audio in the background."
+        },
+        "systemXHR": {
+            "description": "Required to download podcasts and bypass CORS limitations."
+        },
+        "desktop-notification": {
+            "description": "Required to display episode information and playback controls in the notification panel."
+        },
+        "device-storage:music": {
+            "access": "readwrite",
+            "description": "Required to read and write podcasts episodes."
+        },
+        "device-storage:sdcard": {
+            "access": "readwrite",
+            "description": "Required to read and write podcasts episodes to external storage."
+        },
+        "mobiledata": {},
+        "wifidata": {}
+    }
+}
