@@ -2,6 +2,8 @@
     "version": "0.1.0",
     "name": "12AM",
     "description": "XiaoYuZhou FM App for KaiOS",
+    "type": "privileged",
+    "csp": "default-src *; script-src 'self'; object-src 'none'; style-src 'self' 'unsafe-inline'",
     "launch_path": "/index.html",
     "icons": {
         "56": "/assets/icons/56px.png",
@@ -21,13 +23,12 @@
         }
     },
     "default_locale": "en-US",
-    "origin": "app://kaios.liya.design",
     "permissions": {
         "audio-channel-content": {
             "description": "Required to play audio in the background."
         },
         "systemXHR": {
-            "description": "Required to download podcasts and bypass CORS limitations."
+            "description": "Required to download podcasts and perform other vital functions."
         },
         "desktop-notification": {
             "description": "Required to display episode information and playback controls in the notification panel."

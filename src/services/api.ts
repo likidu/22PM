@@ -45,14 +45,14 @@ class XiaoyuzhouFmApi {
     private initRequestInterceptor = () => {
         this.instance.interceptors.request.use(
             this.handleRequest,
-            this.handleError,
+            this.handleReject,
         )
     }
 
     private initResponseInterceptor = () => {
         this.instance.interceptors.response.use(
             this.handleResponse,
-            this.handleError,
+            this.handleReject,
         )
     }
 
@@ -70,7 +70,7 @@ class XiaoyuzhouFmApi {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-member-access
         'data' in data ? data.data : data
 
-    private handleError = async (error: AxiosError) => {
+    private handleReject = async (error: AxiosError) => {
         // Reject promise if it's a usual error
         const { response } = error
         if (response && response.status !== 401) {
@@ -82,9 +82,10 @@ class XiaoyuzhouFmApi {
          * Eject the interceptor so it doesn't loop in case
          * token refresh causes the 401 response
          */
-        // this.instance.interceptors.response.eject()
+        // this.instance.interceptors.response.eject(this.interceptorId)
 
         const originalRequest = error.config
+        console.log(response)
 
         if (!originalRequest.retry) {
             originalRequest.retry = true
@@ -96,16 +97,16 @@ class XiaoyuzhouFmApi {
                 console.log(result)
 
                 if (JSON.parse(result.success)) {
-                    localStorage.setItem(
-                        'access-token',
-                        result['x-jike-access-token'],
-                    )
                     // TODO: fix the type
                     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
                     this.instance.defaults.headers.common[
                         'x-jike-access-token'
-                    ] = localStorage.getItem('access-token')
+                    ] = result['x-jike-access-token']
 
+                    localStorage.setItem(
+                        'access-token',
+                        result['x-jike-access-token'],
+                    )
                     localStorage.setItem(
                         'refresh-token',
                         result['x-jike-refresh-token'],
@@ -113,6 +114,16 @@ class XiaoyuzhouFmApi {
                 }
             }
             return this.instance(originalRequest)
+        }
+    }
+
+    private handleError = (error: AxiosError) => {
+        if (error.response) {
+            console.log(error.response.data)
+            console.log(error.response.status)
+            console.log(error.response.headers)
+        } else {
+            console.log(error.message)
         }
     }
 
@@ -135,19 +146,19 @@ class XiaoyuzhouFmApi {
     /**
      * editorPick
      */
-    public editorPick = (): AxiosPromise<EditorPick[]> =>
+    public editorPick = (): Promise<EditorPick[]> =>
         this.instance.post('/v1/editor-pick/list')
 
     /**
      * getPodcast
      */
-    public getPodcast = (pid: string): AxiosPromise<PodcastType> =>
+    public getPodcast = (pid: string): Promise<PodcastType> =>
         this.instance.get(`/v1/podcast/get?pid=${pid}`)
 
     /**
      * getEpisode
      */
-    public getEpisode = (eid: string): AxiosPromise<EpisodeType> =>
+    public getEpisode = (eid: string): Promise<EpisodeType> =>
         this.instance.get(`/v1/episode/get?eid=${eid}`)
 }
 

@@ -15,6 +15,7 @@ export const API_CONFIG: AxiosRequestConfig = {
     headers: {
         'App-BuildNo': 347,
         'App-Version': '1.12.1',
+        'Access-Control-Allow-Origin': '*',
         BundleID: 'app.podcast.cosmos',
         'Content-Type': 'application/json;charset=utf-8',
         'app-permissions': 0,
