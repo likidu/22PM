@@ -1,3 +1,6 @@
 export * from './Content'
 export * from './List'
 export * from './ListItem'
+export * from './Player'
+export * from './ProgressBar'
+export * from './Softkey'

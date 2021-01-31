@@ -6,6 +6,7 @@ import { createHashHistory } from 'history'
 import Discovery from './routes/Discovery'
 import Episode from './routes/Episode'
 import NotFound from './routes/NotFound'
+import { Player, Softkey } from './components'
 
 import {
     initialPlayerState,
@@ -45,6 +46,8 @@ const App: FunctionalComponent = () => {
                         <Route path="/episode/:eid" component={Episode} />
                         <NotFound default />
                     </Router>
+                    <Player {...player} />
+                    <Softkey {...softkey.current} />
                 </div>
             </SoftkeyContext.Provider>
         </PlayerContext.Provider>

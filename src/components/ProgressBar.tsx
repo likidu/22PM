@@ -4,7 +4,7 @@ interface ProgressBarProps {
     progress: number
 }
 
-const ProgressBar: FunctionalComponent<ProgressBarProps> = ({
+export const ProgressBar: FunctionalComponent<ProgressBarProps> = ({
     progress,
 }: ProgressBarProps) => {
     return (
@@ -17,5 +17,3 @@ const ProgressBar: FunctionalComponent<ProgressBarProps> = ({
         </div>
     )
 }
-
-export default ProgressBar

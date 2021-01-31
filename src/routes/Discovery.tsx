@@ -3,9 +3,10 @@ import { route } from 'preact-router'
 import { useEffect, useRef, useState } from 'preact/hooks'
 
 import xiaoyuzhouFmApi from '../services/api'
-import { Content, ListItem } from '../components'
+import { Content, List, ListItem } from '../components'
 
 import { EditorPick } from '../types/api.type'
+import { useNavigation, useSoftkey } from '../hooks'
 
 interface DailyPickProps {
     key: number
@@ -33,12 +34,33 @@ const DailyPick: FunctionalComponent<DailyPickProps> = ({
 
 const Discovery: FunctionalComponent = () => {
     const containerRef = useRef<HTMLDivElement>(null)
-
+    const listRef = useRef<HTMLDivElement>(null)
     const [editorPicks, setEditorPicks] = useState<EditorPick[]>([])
+    const [, setNavigation, getCurrent] = useNavigation(
+        'Discovery',
+        containerRef,
+        listRef,
+        'y',
+    )
 
-    const onKeyDown = (ev: KeyboardEvent) => {
-        if (ev.key.toString() === 'Enter') route('/episode/1234')
+    const onKeyCenter = () => {
+        const { key } = getCurrent()
+        if (key) route(`/episode/${key}`)
     }
+
+    useSoftkey(
+        'Discovery',
+        {
+            left: 'Player',
+            right: 'Settings',
+            onKeyCenter,
+            onKeyLeft: () => console.log('Discovery onKeyLeft'),
+            onKeyRight: () => console.log('Discovery onKeyRight'),
+        },
+        [editorPicks],
+    )
+
+    useEffect(() => setNavigation(0), [editorPicks])
 
     useEffect(() => {
         // TODO: Refresh only the current date is changed, otherwise get frm localStorage
@@ -47,17 +69,11 @@ const Discovery: FunctionalComponent = () => {
             setEditorPicks(result)
         }
         void fetchData()
-
-        document.addEventListener('keydown', onKeyDown)
-        return () => document.removeEventListener('keydown', onKeyDown)
     }, [])
-
-    useEffect(() => console.log(editorPicks), [editorPicks])
 
     return (
         <Content containerRef={containerRef} title="Discovery">
-            <div>
-                <h1>Discovery</h1>
+            <List containerRef={listRef}>
                 {editorPicks && editorPicks.length > 0 ? (
                     editorPicks.map((daily, index) => (
                         <DailyPick key={index} daily={daily} />
@@ -65,7 +81,7 @@ const Discovery: FunctionalComponent = () => {
                 ) : (
                     <p>Loading...</p>
                 )}
-            </div>
+            </List>
         </Content>
     )
 }
