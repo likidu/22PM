@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'preact/hooks'
+import { useContext } from 'preact/hooks'
 import { PlayerContext } from '../contexts'
 
 import {

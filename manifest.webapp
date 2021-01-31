@@ -1,6 +1,6 @@
 {
     "version": "0.1.0",
-    "name": "12AM",
+    "name": "22PM",
     "description": "XiaoYuZhou FM App for KaiOS",
     "type": "privileged",
     "csp": "default-src *; script-src 'self'; object-src 'none'; style-src 'self' 'unsafe-inline'",
@@ -17,12 +17,13 @@
     "categories": ["social"],
     "locales": {
         "en-US": {
-            "name": "12AM",
+            "name": "22PM",
             "subtitle": "XiaoYuZhou FM App for KaiOS",
             "description": "XiaoYuZhou FM App for KaiOS"
         }
     },
     "default_locale": "en-US",
+    "origin": "https://kaios.liya.design",
     "permissions": {
         "audio-channel-content": {
             "description": "Required to play audio in the background."
