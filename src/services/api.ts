@@ -1,4 +1,5 @@
 import axios, {
+    AxiosAdapter,
     AxiosError,
     AxiosPromise,
     AxiosResponse,
@@ -29,7 +30,6 @@ class XiaoyuzhouFmApi {
 
     private constructor(config: AxiosRequestConfig) {
         this.instance = axios.create(config)
-
         this.initRequestInterceptor()
         this.initResponseInterceptor()
     }
@@ -85,7 +85,6 @@ class XiaoyuzhouFmApi {
         // this.instance.interceptors.response.eject(this.interceptorId)
 
         const originalRequest = error.config
-        console.log(response)
 
         if (!originalRequest.retry) {
             originalRequest.retry = true
