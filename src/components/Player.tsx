@@ -11,7 +11,7 @@ export const Player: FunctionalComponent<PlayerProps> = ({
     playing,
     progress: contextProgress,
 }: PlayerProps) => {
-    const audioRef = useRef<HTMLAudioElement>()
+    const audioRef = useRef<HTMLAudioElement>(null)
     const { current: audioEl } = audioRef
 
     const [, , , setPlayerProgress] = usePlayer()
@@ -25,6 +25,7 @@ export const Player: FunctionalComponent<PlayerProps> = ({
 
     useEffect(() => {
         if (audioEl) {
+            audioEl.mozAudioChannelType = 'content'
             audioEl.onerror = (ev: Event | string) =>
                 console.error('Audio error', ev)
             audioEl.ontimeupdate = () => {
@@ -47,7 +48,12 @@ export const Player: FunctionalComponent<PlayerProps> = ({
     return (
         <div>
             <h2 class="bg-green-50">{episode.title}</h2>
-            <audio ref={audioRef} controls={false} src={episode.mediaKey} />
+            <audio
+                ref={audioRef}
+                type="audio/mpeg"
+                controls={false}
+                src={episode.mediaKey}
+            />
         </div>
     )
 }

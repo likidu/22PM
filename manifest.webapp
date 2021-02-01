@@ -23,7 +23,7 @@
         }
     },
     "default_locale": "en-US",
-    "origin": "https://kaios.liya.design",
+    "origin": "app://kaios.liya.design",
     "permissions": {
         "audio-channel-content": {
             "description": "Required to play audio in the background."

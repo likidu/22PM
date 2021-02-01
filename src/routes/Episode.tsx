@@ -13,6 +13,8 @@ interface EpisodeProps {
 }
 
 const Episode: FunctionalComponent<EpisodeProps> = ({ eid }: EpisodeProps) => {
+    const volume = navigator.volumeManager
+
     const containerRef = useRef<HTMLDivElement>(null)
     const [player, setPlayerEpisode, setPlayerPlaying] = usePlayer()
 
@@ -39,6 +41,8 @@ const Episode: FunctionalComponent<EpisodeProps> = ({ eid }: EpisodeProps) => {
             onKeyLeft: () => console.log('Episode onKeyLeft'),
             onKeyRight: () => console.log('Episode onKeyRight'),
             onKeyBackspace: () => route('/'),
+            onKeyArrowUp: () => volume.requestUp(),
+            onKeyArrowDown: () => volume.requestDown(),
         },
         [episode],
     )
