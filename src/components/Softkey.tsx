@@ -46,10 +46,7 @@ interface SoftkeyElement {
     onbackspace?: KeyHandler
 }
 
-/**
- * TODO:
- * This should be the correct type for 'softkey', but it will miss the 'ref'
- */
+// TODO: this should be the correct type for 'softkey', but it will miss the 'ref'
 // interface SoftkeyAttributes<T> extends createElement.JSX.HTMLAttributes {}
 
 /**
