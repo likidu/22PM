@@ -128,7 +128,7 @@ export const useNavigation = (
         if (!element) return
         if (element.tagName === 'INPUT') return
 
-        // todo: cache the next line since it doesn't change
+        // TODO: cache the next line since it doesn't change
         const containerRect = listRef.current.getBoundingClientRect()
         const rect = element.getBoundingClientRect()
 

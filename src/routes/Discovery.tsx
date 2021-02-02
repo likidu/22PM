@@ -63,13 +63,17 @@ const Discovery: FunctionalComponent = () => {
     useEffect(() => setNavigation(0), [editorPicks])
 
     useEffect(() => {
-        // TODO: Refresh only the current date is changed, otherwise get frm localStorage
+        // TODO: refresh only the current date is changed, otherwise get frm localStorage
         const fetchData = async () => {
             const result = await xiaoyuzhouFmApi.editorPick()
             setEditorPicks(result)
         }
         void fetchData()
     }, [])
+
+    useEffect(() => {
+        console.log(editorPicks)
+    }, [editorPicks])
 
     return (
         <Content containerRef={containerRef} title="Discovery">

@@ -56,13 +56,17 @@ const Episode: FunctionalComponent<EpisodeProps> = ({ eid }: EpisodeProps) => {
     }, [player.progress, progress])
 
     useEffect(() => {
-        // TODO: Refresh only the current date is changed, otherwise get frm localStorage
+        // TODO: refresh only the current date is changed, otherwise get frm localStorage
         const fetchData = async (): Promise<void> => {
             const result = await xiaoyuzhouFmApi.getEpisode(eid)
             setEpisode(result)
         }
         void fetchData()
     }, [])
+
+    useEffect(() => {
+        console.log(episode)
+    }, [episode])
 
     return (
         <Content containerRef={containerRef} title="Episode">

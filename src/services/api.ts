@@ -13,7 +13,8 @@ import type {
     EditorPick,
 } from '../types/api.type'
 
-import { API_CONFIG } from './config'
+import { API_CONFIG, DB_NAME } from './config'
+import { addEditorPicks, getEditorPicks, isEmptyCache } from './db'
 
 declare module 'axios' {
     interface AxiosResponse<T = any> extends Promise<T> {}
@@ -141,11 +142,41 @@ class XiaoyuzhouFmApi {
             },
         })
 
+    private saveEditorPicks = async () => {
+        console.log('Retrieving editor picks list...')
+
+        const data = await this.instance.post<EditorPick[]>(
+            '/v1/editor-pick/list',
+        )
+        await addEditorPicks(data)
+    }
+
     /**
      * editorPick
      */
-    public editorPick = (): Promise<EditorPick[]> =>
-        this.instance.post('/v1/editor-pick/list')
+    public editorPick = async (): Promise<EditorPick[]> => {
+        const now = new Date().toJSON()
+        const today = Date.parse(now.slice(0, 10))
+
+        const currentList = await getEditorPicks()
+
+        if (currentList.length > 0) {
+            // Now passed last updated date and 1AM in the morning,
+            // which we assume the API updates the editor picks at that time
+            if (
+                today > Date.parse(currentList[0].date) &&
+                Date.parse(now) >
+                    Date.parse(`${now.slice(0, 10)}T01:00:00.000Z`)
+            ) {
+                await this.saveEditorPicks()
+            }
+        } else {
+            await this.saveEditorPicks()
+        }
+
+        // Return new list from cache
+        return await getEditorPicks()
+    }
 
     /**
      * getPodcast
