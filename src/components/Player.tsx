@@ -8,7 +8,7 @@ type PlayerProps = PlayerState
 
 export const Player: FunctionalComponent<PlayerProps> = ({
     episode: contextEpisode,
-    playing,
+    playing: contextPlaying,
     progress: contextProgress,
 }: PlayerProps) => {
     const audioRef = useRef<HTMLAudioElement>(null)
@@ -25,6 +25,17 @@ export const Player: FunctionalComponent<PlayerProps> = ({
 
     useEffect(() => {
         if (audioEl) {
+            contextPlaying ? void audioEl.play() : void audioEl.pause()
+        }
+    }, [contextPlaying])
+
+    useEffect(() => {
+        const timeDiff = Math.abs(progress - contextProgress)
+        if (timeDiff > 2 && audioEl) audioEl.currentTime = contextProgress
+    }, [contextProgress])
+
+    useEffect(() => {
+        if (audioEl) {
             audioEl.mozAudioChannelType = 'content'
             audioEl.onerror = (ev: Event | string) =>
                 console.error('Audio error', ev)
@@ -34,12 +45,6 @@ export const Player: FunctionalComponent<PlayerProps> = ({
             }
         }
     }, [episode])
-
-    useEffect(() => {
-        if (audioEl) {
-            playing ? void audioEl.play() : void audioEl.pause()
-        }
-    }, [playing])
 
     useEffect(() => {
         setPlayerProgress(progress)

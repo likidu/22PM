@@ -16,11 +16,17 @@ const Episode: FunctionalComponent<EpisodeProps> = ({ eid }: EpisodeProps) => {
     const volume = navigator.volumeManager
 
     const containerRef = useRef<HTMLDivElement>(null)
-    const [player, setPlayerEpisode, setPlayerPlaying] = usePlayer()
+    const [
+        player,
+        setPlayerEpisode,
+        setPlayerPlaying,
+        setPlayerProgress,
+    ] = usePlayer()
 
     const [episode, setEpisode] = useState<EpisodeType>({} as never)
     const [playing, setPlaying] = useState(player.playing)
     const [progress, setProgress] = useState(player.progress)
+    const [skip, setSkip] = useState(false)
 
     const onKeyCenter = () => {
         // Update the reducer only when a new episode is about to play
@@ -28,7 +34,18 @@ const Episode: FunctionalComponent<EpisodeProps> = ({ eid }: EpisodeProps) => {
             const { eid, title, mediaKey, duration } = episode
             setPlayerEpisode({ eid, title, mediaKey, duration })
         }
+
         setPlaying(playing => !playing)
+    }
+
+    const onKeyArrowLeft = () => {
+        setSkip(true)
+        setProgress(progress => progress - 20)
+    }
+
+    const onKeyArrowRight = () => {
+        setSkip(true)
+        setProgress(progress => progress + 20)
     }
 
     useSoftkey(
@@ -43,6 +60,8 @@ const Episode: FunctionalComponent<EpisodeProps> = ({ eid }: EpisodeProps) => {
             onKeyBackspace: () => route('/'),
             onKeyArrowUp: () => volume.requestUp(),
             onKeyArrowDown: () => volume.requestDown(),
+            onKeyArrowLeft,
+            onKeyArrowRight,
         },
         [episode],
     )
@@ -52,8 +71,16 @@ const Episode: FunctionalComponent<EpisodeProps> = ({ eid }: EpisodeProps) => {
     }, [playing])
 
     useEffect(() => {
+        if (skip) {
+            setPlayerProgress(progress)
+            setSkip(false)
+        }
+    }, [progress])
+
+    // Get player progress to be used for ProgressBar
+    useEffect(() => {
         setProgress(player.progress)
-    }, [player.progress, progress])
+    }, [player.progress])
 
     useEffect(() => {
         // TODO: Refresh only the current date is changed, otherwise get frm localStorage
