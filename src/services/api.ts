@@ -152,7 +152,7 @@ class XiaoyuzhouFmApi {
     }
 
     /**
-     * editorPick
+     * Daily editor picks list
      */
     public editorPick = async (): Promise<EditorPick[]> => {
         const now = new Date().toJSON()
@@ -179,13 +179,23 @@ class XiaoyuzhouFmApi {
     }
 
     /**
-     * getPodcast
+     * Subscription list
+     */
+    public subscription = (): Promise<PodcastType[]> =>
+        this.instance.post('/v1/subscription/list', {
+            sortOrder: 'desc',
+            limit: 20,
+            sortBy: 'subscribedAt',
+        })
+
+    /**
+     * Individual podcast
      */
     public getPodcast = (pid: string): Promise<PodcastType> =>
         this.instance.get(`/v1/podcast/get?pid=${pid}`)
 
     /**
-     * getEpisode
+     * Individual episode
      */
     public getEpisode = (eid: string): Promise<EpisodeType> =>
         this.instance.get(`/v1/episode/get?eid=${eid}`)

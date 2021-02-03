@@ -1,12 +1,12 @@
 import { FunctionalComponent, h } from 'preact'
-import { useReducer } from 'preact/hooks'
-import { Route, Router, RouterOnChangeArgs } from 'preact-router'
+import { useReducer, useState } from 'preact/hooks'
+import { Route, Router } from 'preact-router'
 import { createHashHistory } from 'history'
 
-import Discovery from './routes/Discovery'
+import Main from './routes/Main'
 import Episode from './routes/Episode'
 import NotFound from './routes/NotFound'
-import { Player, Softkey } from './components'
+import { Player, Popup, Softkey } from './components'
 
 import {
     initialPlayerState,
@@ -14,7 +14,7 @@ import {
     INIT_ACCESS_TOKEN,
     INIT_REFRESH_TOKEN,
 } from './services/config'
-import { PlayerContext, SoftkeyContext } from './contexts'
+import { PlayerContext, PopupContext, SoftkeyContext } from './contexts'
 import { reducer } from './reducers'
 
 localStorage.setItem('access-token', INIT_ACCESS_TOKEN)
@@ -27,28 +27,23 @@ const App: FunctionalComponent = () => {
     }
 
     const [{ softkey, player }, dispatch] = useReducer(reducer, initialState)
-
-    // let currentUrl: string
-    const handleRoute = (e: RouterOnChangeArgs) => {
-        const { url } = e
-        console.log(`Current URL: ${url}`)
-    }
+    const [popupState, setPopupState] = useState([])
 
     return (
         <PlayerContext.Provider value={{ player, dispatch }}>
             <SoftkeyContext.Provider value={{ softkey, dispatch }}>
-                <div id="app" class="h-screen flex flex-col">
-                    <Router
-                        history={createHashHistory()}
-                        onChange={handleRoute}
-                    >
-                        <Route path="/" component={Discovery} />
-                        <Route path="/episode/:eid" component={Episode} />
-                        <NotFound default />
-                    </Router>
-                    <Player {...player} />
-                    <Softkey {...softkey.current} />
-                </div>
+                <PopupContext.Provider value={{ popupState, setPopupState }}>
+                    <div id="app" class="h-screen flex flex-col">
+                        <Router history={createHashHistory()}>
+                            <Route path="/:*" component={Main} />
+                            <Route path="/episode/:eid" component={Episode} />
+                            <NotFound default />
+                        </Router>
+                        <Player {...player} />
+                        <Softkey {...softkey.current} />
+                        <Popup popups={popupState} />
+                    </div>
+                </PopupContext.Provider>
             </SoftkeyContext.Provider>
         </PlayerContext.Provider>
     )

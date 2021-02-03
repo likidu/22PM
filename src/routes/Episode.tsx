@@ -1,4 +1,4 @@
-import { FunctionalComponent, h } from 'preact'
+import { Fragment, FunctionalComponent, h } from 'preact'
 import { route } from 'preact-router'
 import { useRef, useEffect, useState } from 'preact/hooks'
 
@@ -96,12 +96,17 @@ const Episode: FunctionalComponent<EpisodeProps> = ({ eid }: EpisodeProps) => {
     }, [episode])
 
     return (
-        <Content containerRef={containerRef} title="Episode">
-            <h2>{episode.title}</h2>
-            <ProgressBar progress={progress / episode.duration} />
+        <Fragment>
+            <header class="text-center">
+                <h1 class="font-light">Episode</h1>
+            </header>
+            <Content containerRef={containerRef}>
+                <h2>{episode.title}</h2>
+                <ProgressBar progress={progress / episode.duration} />
 
-            <div dangerouslySetInnerHTML={{ __html: episode.shownotes }} />
-        </Content>
+                <div dangerouslySetInnerHTML={{ __html: episode.shownotes }} />
+            </Content>
+        </Fragment>
     )
 }
 

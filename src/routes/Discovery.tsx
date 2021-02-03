@@ -1,6 +1,6 @@
 import { Fragment, FunctionalComponent, h } from 'preact'
-import { route } from 'preact-router'
 import { useEffect, useRef, useState } from 'preact/hooks'
+import { route } from 'preact-router'
 
 import xiaoyuzhouFmApi from '../services/api'
 import { Content, List, ListItem } from '../components'
@@ -32,7 +32,13 @@ const DailyPick: FunctionalComponent<DailyPickProps> = ({
     )
 }
 
-const Discovery: FunctionalComponent = () => {
+interface DiscoveryProps {
+    onSwitch: () => void
+}
+
+const Discovery: FunctionalComponent<DiscoveryProps> = ({
+    onSwitch,
+}: DiscoveryProps) => {
     const containerRef = useRef<HTMLDivElement>(null)
     const listRef = useRef<HTMLDivElement>(null)
     const [editorPicks, setEditorPicks] = useState<EditorPick[]>([])
@@ -56,6 +62,7 @@ const Discovery: FunctionalComponent = () => {
             onKeyCenter,
             onKeyLeft: () => console.log('Discovery onKeyLeft'),
             onKeyRight: () => console.log('Discovery onKeyRight'),
+            onKeyArrowRight: onSwitch,
         },
         [editorPicks],
     )
@@ -74,9 +81,8 @@ const Discovery: FunctionalComponent = () => {
     useEffect(() => {
         console.log(editorPicks)
     }, [editorPicks])
-
     return (
-        <Content containerRef={containerRef} title="Discovery">
+        <Content containerRef={containerRef}>
             <List containerRef={listRef}>
                 {editorPicks && editorPicks.length > 0 ? (
                     editorPicks.map((daily, index) => (

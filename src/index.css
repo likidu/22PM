@@ -17,3 +17,7 @@ body {
 [nav-selected='true'] {
     @apply font-bold;
 }
+
+.active-tab {
+    @apply font-bold;
+}

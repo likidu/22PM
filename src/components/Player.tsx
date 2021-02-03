@@ -51,7 +51,7 @@ export const Player: FunctionalComponent<PlayerProps> = ({
     }, [progress])
 
     return (
-        <div>
+        <div id="player">
             <h2 class="bg-green-50">{episode.title}</h2>
             <audio
                 ref={audioRef}
