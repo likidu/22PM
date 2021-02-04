@@ -79,6 +79,7 @@ const Updates: FunctionalComponent<UpdatesProps> = ({
                             key={index}
                             text={episode.title}
                             uid={episode.eid}
+                            thumbnail={episode.image.thumbnailUrl}
                         />
                     ))
                 ) : (

@@ -9,23 +9,27 @@ import { EditorPick } from '../types/api.type'
 import { useNavigation, useSoftkey } from '../hooks'
 
 interface DailyPickProps {
-    key: number
     daily: EditorPick
 }
 
 const DailyPick: FunctionalComponent<DailyPickProps> = ({
-    key,
     daily,
 }: DailyPickProps) => {
     const { date, picks } = daily
+
+    const [year, month, day] = date.split('-')
     return (
         <Fragment>
-            <h4 key={key}>{date}</h4>
+            <h4 class="font-semibold px-2 py-1">
+                <span class="text-shakespeare-300">{`${year}.`}</span>
+                <span class="text-shakespeare-600">{`${month}.${day}`}</span>
+            </h4>
             {picks.map((pick, index) => (
                 <ListItem
                     key={index}
                     text={pick.episode.title}
                     uid={pick.episode.eid}
+                    thumbnail={pick.episode.image.thumbnailUrl}
                 />
             ))}
         </Fragment>
