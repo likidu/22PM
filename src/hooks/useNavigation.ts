@@ -5,7 +5,7 @@ import { useSoftkey } from '../hooks'
 interface CurrentElement {
     type: string
     index: number
-    key: string | null
+    uid: string | null
 }
 
 export const useNavigation = (
@@ -18,7 +18,7 @@ export const useNavigation = (
     const [current, setCurrent] = useState<CurrentElement>({
         type: '',
         index: 0,
-        key: null,
+        uid: null,
     })
 
     const getAllElements = () =>
@@ -93,7 +93,7 @@ export const useNavigation = (
             setCurrent({
                 type: selectElement.tagName,
                 index: setIndex,
-                key: selectElement.getAttribute('data-selected-key'),
+                uid: selectElement.getAttribute('data-selected-uid'),
             })
         } else {
             setNavigation(0)
@@ -111,7 +111,7 @@ export const useNavigation = (
         return {
             type: element.tagName,
             index: parseInt(index),
-            key: element.getAttribute('data-selected-key'),
+            uid: element.getAttribute('data-selected-uid'),
         }
     }
 

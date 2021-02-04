@@ -1,8 +1,12 @@
 import { FunctionalComponent, h } from 'preact'
+import { useEffect, useRef, useState } from 'preact/hooks'
+import { route } from 'preact-router'
 import { useSoftkey } from '../hooks'
 
+import xiaoyuzhouFmApi from '../services/api'
 import { Content, List, ListItem } from '../components'
-import { useRef } from 'preact/hooks'
+
+import { PodcastType } from '../types/api.type'
 
 interface SubscriptionProps {
     onSwitch: () => void
@@ -12,17 +16,40 @@ const Subscription: FunctionalComponent<SubscriptionProps> = ({
     onSwitch,
 }: SubscriptionProps) => {
     const containerRef = useRef<HTMLDivElement>(null)
+    const listRef = useRef<HTMLDivElement>(null)
+    const [podcasts, setPodcasts] = useState<PodcastType[]>([])
+
+    const onClose = () => route('/updates', true)
 
     useSoftkey('Subscription', {
-        left: 'Player',
-        right: 'Settings',
-        onKeyLeft: () => console.log('Subscription onKeyLeft'),
-        onKeyRight: () => console.log('Subscription onKeyRight'),
+        right: 'Close',
+        onKeyRight: onClose,
         onKeyArrowLeft: onSwitch,
+        onKeyBackspace: onClose,
     })
+
+    useEffect(() => {
+        void (async () => {
+            const result = await xiaoyuzhouFmApi.subscription()
+            setPodcasts(result)
+        })()
+    }, [])
+
     return (
         <Content containerRef={containerRef}>
-            <h1>My subscription</h1>
+            <List containerRef={listRef}>
+                {podcasts && podcasts.length > 0 ? (
+                    podcasts.map((podcast, index) => (
+                        <ListItem
+                            key={index}
+                            text={podcast.title}
+                            uid={podcast.pid}
+                        />
+                    ))
+                ) : (
+                    <p>Loading...</p>
+                )}
+            </List>
         </Content>
     )
 }

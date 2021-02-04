@@ -25,7 +25,7 @@ const DailyPick: FunctionalComponent<DailyPickProps> = ({
                 <ListItem
                     key={index}
                     text={pick.episode.title}
-                    eid={pick.episode.eid}
+                    uid={pick.episode.eid}
                 />
             ))}
         </Fragment>
@@ -50,8 +50,8 @@ const Discovery: FunctionalComponent<DiscoveryProps> = ({
     )
 
     const onKeyCenter = () => {
-        const { key } = getCurrent()
-        if (key) route(`/episode/${key}`)
+        const { uid } = getCurrent()
+        if (uid) route(`/episode/${uid}`)
     }
 
     useSoftkey(
@@ -67,20 +67,15 @@ const Discovery: FunctionalComponent<DiscoveryProps> = ({
         [editorPicks],
     )
 
-    useEffect(() => setNavigation(0), [editorPicks])
-
     useEffect(() => {
-        // TODO: refresh only the current date is changed, otherwise get frm localStorage
-        const fetchData = async () => {
+        void (async () => {
             const result = await xiaoyuzhouFmApi.editorPick()
             setEditorPicks(result)
-        }
-        void fetchData()
+        })()
     }, [])
 
-    useEffect(() => {
-        console.log(editorPicks)
-    }, [editorPicks])
+    useEffect(() => setNavigation(0), [editorPicks])
+
     return (
         <Content containerRef={containerRef}>
             <List containerRef={listRef}>

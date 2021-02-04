@@ -179,6 +179,20 @@ class XiaoyuzhouFmApi {
     }
 
     /**
+     * Inbox list
+     */
+    public inbox = (): Promise<EpisodeType[]> =>
+        this.instance.post('/v1/inbox/list', {
+            limit: 20,
+        })
+
+    /**
+     * Individual episode
+     */
+    public getEpisode = (eid: string): Promise<EpisodeType> =>
+        this.instance.get(`/v1/episode/get?eid=${eid}`)
+
+    /**
      * Subscription list
      */
     public subscription = (): Promise<PodcastType[]> =>
@@ -193,12 +207,6 @@ class XiaoyuzhouFmApi {
      */
     public getPodcast = (pid: string): Promise<PodcastType> =>
         this.instance.get(`/v1/podcast/get?pid=${pid}`)
-
-    /**
-     * Individual episode
-     */
-    public getEpisode = (eid: string): Promise<EpisodeType> =>
-        this.instance.get(`/v1/episode/get?eid=${eid}`)
 }
 
 // Returns a singleton of the class instance

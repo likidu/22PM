@@ -1,21 +1,18 @@
 import { FunctionalComponent, h } from 'preact'
 
 interface ListItemProps {
-    key?: number
-    eid: string
+    uid: string
     text: string
 }
 
 export const ListItem: FunctionalComponent<ListItemProps> = ({
-    key,
-    eid,
+    uid,
     text,
 }: ListItemProps) => {
     return (
         <div
-            key={key}
             data-selectable
-            data-selected-key={eid}
+            data-selected-uid={uid}
             class="flex justify-between"
         >
             <p>{text}</p>

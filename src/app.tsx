@@ -5,6 +5,7 @@ import { createHashHistory } from 'history'
 
 import Main from './routes/Main'
 import Episode from './routes/Episode'
+import Subscription from './routes/Subscription'
 import NotFound from './routes/NotFound'
 import { Player, Popup, Softkey } from './components'
 
@@ -37,6 +38,10 @@ const App: FunctionalComponent = () => {
                         <Router history={createHashHistory()}>
                             <Route path="/:*" component={Main} />
                             <Route path="/episode/:eid" component={Episode} />
+                            <Route
+                                path="/subscription"
+                                component={Subscription}
+                            />
                             <NotFound default />
                         </Router>
                         <Player {...player} />

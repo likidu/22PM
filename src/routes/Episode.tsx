@@ -57,7 +57,7 @@ const Episode: FunctionalComponent<EpisodeProps> = ({ eid }: EpisodeProps) => {
             onKeyCenter,
             onKeyLeft: () => console.log('Episode onKeyLeft'),
             onKeyRight: () => console.log('Episode onKeyRight'),
-            onKeyBackspace: () => route('/'),
+            onKeyBackspace: () => history.back(),
             onKeyArrowUp: () => volume.requestUp(),
             onKeyArrowDown: () => volume.requestDown(),
             onKeyArrowLeft,

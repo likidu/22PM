@@ -1,5 +1,8 @@
 import { FunctionalComponent, h, RefObject } from 'preact'
-import { useSoftkey } from '../hooks'
+import { useNavigation, useSoftkey } from '../hooks'
+
+import { List, ListItem } from '../components'
+import { useEffect, useRef } from 'preact/hooks'
 
 interface MenuItem {
     text: string
@@ -19,17 +22,46 @@ export const Menu: FunctionalComponent<MenuProps> = ({
     containerRef,
     close,
 }: MenuProps) => {
+    const listRef = useRef<HTMLDivElement>(null)
+
+    const [, setNavigation, getCurrent] = useNavigation(
+        'Menu',
+        containerRef,
+        listRef,
+        'y',
+    )
+
+    const onKeyCenter = () => {
+        const { index } = getCurrent()
+        const menu = menus[index]
+
+        if (menu.action) {
+            menu.action()
+            if (!menu.confirm) close()
+        }
+    }
+
     useSoftkey('Menu', {
         center: 'Select',
         right: 'Close',
+        onKeyCenter,
         onKeyRight: close,
     })
+
+    useEffect(() => setNavigation(0), [])
+
     return (
         <div id="menu" ref={containerRef}>
             <h4>Options</h4>
-            {menus &&
-                menus.length > 0 &&
-                menus.map(menu => <p key={menu.key}>{menu.text}</p>)}
+            <List containerRef={listRef}>
+                {menus && menus.length > 0 ? (
+                    menus.map((menu, index) => (
+                        <ListItem key={index} text={menu.text} uid={menu.key} />
+                    ))
+                ) : (
+                    <p>No menu items.</p>
+                )}
+            </List>
         </div>
     )
 }

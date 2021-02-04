@@ -10,7 +10,7 @@ const Main: FunctionalComponent = () => {
         <Fragment>
             <header class="text-center">
                 <nav>
-                    <Link activeClassName="active-tab" href="/discovery">
+                    <Link activeClassName="active-tab" href="/">
                         Discovery
                     </Link>
                     <Link activeClassName="active-tab" href="/updates">
@@ -20,14 +20,11 @@ const Main: FunctionalComponent = () => {
             </header>
             <Router>
                 <Discovery
-                    path="/discovery"
+                    path="/"
                     onSwitch={() => route('/updates', true)}
                     default
                 />
-                <Updates
-                    path="/updates"
-                    onSwitch={() => route('/discovery', true)}
-                />
+                <Updates path="/updates" onSwitch={() => route('/', true)} />
             </Router>
         </Fragment>
     )
