@@ -82,12 +82,10 @@ const Episode: FunctionalComponent<EpisodeProps> = ({ eid }: EpisodeProps) => {
     }, [player.progress])
 
     useEffect(() => {
-        // TODO: refresh only the current date is changed, otherwise get frm localStorage
-        const fetchData = async (): Promise<void> => {
+        void (async (): Promise<void> => {
             const result = await xiaoyuzhouFmApi.getEpisode(eid)
             setEpisode(result)
-        }
-        void fetchData()
+        })()
     }, [])
 
     useEffect(() => {

@@ -22,8 +22,6 @@ export const usePopup = <T>(
     }
 
     const show = (props: T) => {
-        console.log('usePopup: props', props)
-
         setPopupState((oldState: PopupState<T>[]) => {
             let newState = [...oldState]
             const newPopup = {
