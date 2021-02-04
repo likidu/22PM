@@ -1,5 +1,4 @@
 import { Fragment, FunctionalComponent, h } from 'preact'
-import { route } from 'preact-router'
 import { useRef, useEffect, useState } from 'preact/hooks'
 
 import { usePlayer, useSoftkey } from '../hooks'

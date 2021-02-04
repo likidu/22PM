@@ -1,9 +1,10 @@
 import { createContext } from 'preact'
 import { StateUpdater } from 'preact/hooks'
+import { PopupState } from '../types/popup.type'
 
-export interface PopupContextType {
-    popupState: any[]
-    setPopupState: StateUpdater<any[]>
+interface PopupContextProps<T> {
+    popupState: PopupState<T>[]
+    setPopupState: StateUpdater<PopupState<T>[]>
 }
 
-export const PopupContext = createContext<PopupContextType>({} as never)
+export const PopupContext = createContext<PopupContextProps<any>>([] as never)

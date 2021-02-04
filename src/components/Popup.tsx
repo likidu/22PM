@@ -1,7 +1,7 @@
 import { FunctionalComponent, h } from 'preact'
-import { PopupType } from '../types/popup.type'
+import { InitialPopupState, PopupState } from '../types/popup.type'
 
-type PopupEntityProps = PopupType
+type PopupEntityProps = PopupState<InitialPopupState>
 
 const PopupEntity = ({ component, props }: PopupEntityProps) => {
     console.log(typeof component)
@@ -14,7 +14,7 @@ const PopupEntity = ({ component, props }: PopupEntityProps) => {
 }
 
 interface PopupProps {
-    popups: PopupType[]
+    popups: PopupState<InitialPopupState>[]
 }
 
 export const Popup: FunctionalComponent<PopupProps> = ({

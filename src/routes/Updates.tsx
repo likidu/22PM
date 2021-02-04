@@ -4,7 +4,7 @@ import { route } from 'preact-router'
 import { useNavigation, usePopup, useSoftkey } from '../hooks'
 
 import xiaoyuzhouFmApi from '../services/api'
-import { Content, List, ListItem, Menu } from '../components'
+import { Content, List, ListItem, Menu, MenuType } from '../components'
 
 import { EpisodeType } from '../types/api.type'
 
@@ -27,7 +27,7 @@ const Updates: FunctionalComponent<UpdatesProps> = ({
         'y',
     )
 
-    const [showMenu] = usePopup(Menu)
+    const [showMenu] = usePopup<MenuType>(Menu)
 
     const menus = [
         {

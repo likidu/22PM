@@ -4,6 +4,11 @@ import { useNavigation, useSoftkey } from '../hooks'
 import { List, ListItem } from '../components'
 import { useEffect, useRef } from 'preact/hooks'
 
+export interface MenuType {
+    menus: MenuItem[]
+    containerRef: RefObject<HTMLDivElement>
+}
+
 interface MenuItem {
     text: string
     key: string
@@ -11,10 +16,8 @@ interface MenuItem {
     confirm?: boolean
 }
 
-interface MenuProps {
-    menus: MenuItem[]
-    containerRef: RefObject<HTMLDivElement>
-    close: () => void
+interface MenuProps extends MenuType {
+    close?: () => void
 }
 
 export const Menu: FunctionalComponent<MenuProps> = ({
@@ -37,7 +40,7 @@ export const Menu: FunctionalComponent<MenuProps> = ({
 
         if (menu.action) {
             menu.action()
-            if (!menu.confirm) close()
+            if (!menu.confirm && close) close()
         }
     }
 

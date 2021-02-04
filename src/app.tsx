@@ -17,6 +17,7 @@ import {
 } from './services/config'
 import { PlayerContext, PopupContext, SoftkeyContext } from './contexts'
 import { reducer } from './reducers'
+import { InitialPopupState, PopupState } from './types/popup.type'
 
 localStorage.setItem('access-token', INIT_ACCESS_TOKEN)
 localStorage.setItem('refresh-token', INIT_REFRESH_TOKEN)
@@ -28,13 +29,15 @@ const App: FunctionalComponent = () => {
     }
 
     const [{ softkey, player }, dispatch] = useReducer(reducer, initialState)
-    const [popupState, setPopupState] = useState([])
+    const [popupState, setPopupState] = useState<
+        PopupState<InitialPopupState>[]
+    >([])
 
     return (
         <PlayerContext.Provider value={{ player, dispatch }}>
             <SoftkeyContext.Provider value={{ softkey, dispatch }}>
                 <PopupContext.Provider value={{ popupState, setPopupState }}>
-                    <div id="app" class="h-screen flex flex-col">
+                    <div id="app" class="h-screen relative flex flex-col">
                         <Router history={createHashHistory()}>
                             <Route path="/:*" component={Main} />
                             <Route path="/episode/:eid" component={Episode} />

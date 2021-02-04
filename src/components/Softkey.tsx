@@ -133,7 +133,7 @@ export const Softkey: FunctionalComponent<SoftkeyConfig> = ({
     }, [])
 
     return (
-        <footer class="flex items-center w-full max-w-full">
+        <footer class="absolute bottom-0 flex items-center w-full max-w-full">
             <softkey ref={softkeyRef} />
             {left && onKeyLeft && (
                 <SoftkeyButton

@@ -1,11 +1,16 @@
+import { FunctionalComponent } from 'preact'
 import { useContext } from 'preact/hooks'
 import { PopupContext } from '../contexts'
+import { PopupOptions, PopupState } from '../types/popup.type'
 
-export const usePopup = (component, options = {}) => {
+export const usePopup = <T>(
+    component: FunctionalComponent<T>,
+    options: PopupOptions = <PopupOptions>{},
+): [(props: T) => void] => {
     const { setPopupState } = useContext(PopupContext)
 
     const close = () => {
-        setPopupState(oldState => {
+        setPopupState((oldState: PopupState<T>[]) => {
             const newState = [...oldState]
             newState.pop()
             return newState
@@ -16,12 +21,13 @@ export const usePopup = (component, options = {}) => {
         setPopupState([])
     }
 
-    const show = props => {
+    const show = (props: T) => {
         console.log('usePopup: props', props)
 
-        setPopupState(oldState => {
+        setPopupState((oldState: PopupState<T>[]) => {
             let newState = [...oldState]
             const newPopup = {
+                id: component.name,
                 component,
                 props: {
                     ...props,
@@ -29,7 +35,6 @@ export const usePopup = (component, options = {}) => {
                     closeAll,
                 },
                 options,
-                id: component.name,
             }
             if (options.stack) {
                 // prevent showing duplicate component

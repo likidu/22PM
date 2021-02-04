@@ -13,8 +13,8 @@ import type {
     EditorPick,
 } from '../types/api.type'
 
-import { API_CONFIG, DB_NAME } from './config'
-import { addEditorPicks, getEditorPicks, isEmptyCache } from './db'
+import { API_CONFIG } from './config'
+import { addEditorPicks, getEditorPicks } from './db'
 
 declare module 'axios' {
     interface AxiosResponse<T = any> extends Promise<T> {}
