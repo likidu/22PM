@@ -22,11 +22,11 @@ module.exports = {
                 },
             },
             width: {
-                '16px': '16px',
-                '20px': '20px',
-                '24px': '24px',
-                '32px': '32px',
-                '48px': '48px',
+                16: '16px',
+                20: '20px',
+                24: '24px',
+                32: '32px',
+                48: '48px',
             },
             minWidth: {
                 0: '0',
@@ -36,11 +36,11 @@ module.exports = {
                 full: '100%',
             },
             height: {
-                '16px': '16px',
-                '20px': '20px',
-                '24px': '24px',
-                '32px': '32px',
-                '48px': '48px',
+                16: '16px',
+                20: '20px',
+                24: '24px',
+                32: '32px',
+                48: '48px',
             },
             truncate: {
                 lines: {

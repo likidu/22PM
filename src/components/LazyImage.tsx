@@ -22,7 +22,7 @@ export const LazyImage: FunctionalComponent<LazyImageProps> = ({
     return (
         <img
             ref={ref}
-            class="object-fill w-48px h-48px rounded"
+            class="object-fill w-48 h-48 rounded"
             src={inView ? src : undefined}
             alt=""
         />

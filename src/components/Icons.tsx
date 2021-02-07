@@ -1,4 +1,4 @@
-import { FunctionalComponent, h } from 'preact'
+import { cloneElement, FunctionalComponent, h } from 'preact'
 import {
     ChatbubbleOutline,
     EllipsisVertical,
@@ -9,67 +9,99 @@ import {
 } from 'react-ionicons'
 
 interface IconContainerProps {
-    size?: number
+    size: number
     children: JSX.Element
 }
 
 const IconContainer: FunctionalComponent<IconContainerProps> = ({
-    size = 24,
+    size,
     children,
 }: IconContainerProps) => {
     return (
         <div
-            class={`flex m-3 justify-center items-center bg-white rounded-full shadow w-${size}px h-${size}px`}
+            class={`flex m-3 justify-center items-center bg-white rounded-full shadow w-${size} h-${size}`}
         >
             {children}
         </div>
     )
 }
 
-export const IconChatbbble: FunctionalComponent = () => {
+interface IconProps {
+    size: number
+}
+
+export const IconChatbbble: FunctionalComponent<IconProps> = ({
+    size = 16,
+}: IconProps) => {
     return (
-        <IconContainer>
-            <ChatbubbleOutline color={'#000000'} width="16px" height="16px" />
+        <IconContainer size={size + 8}>
+            <ChatbubbleOutline
+                color={'#000000'}
+                width={`${size}px`}
+                height={`${size}px`}
+            />
         </IconContainer>
     )
 }
 
-export const IconEllipsisVertical: FunctionalComponent = () => {
+export const IconEllipsisVertical: FunctionalComponent<IconProps> = ({
+    size = 16,
+}: IconProps) => {
     return (
-        <IconContainer>
-            <EllipsisVertical color={'#000000'} width="16px" height="16px" />
+        <IconContainer size={size + 8}>
+            <EllipsisVertical
+                color={'#000000'}
+                width={`${size}px`}
+                height={`${size}px`}
+            />
         </IconContainer>
     )
 }
 
-export const IconInformation: FunctionalComponent = () => {
+export const IconInformation: FunctionalComponent<IconProps> = ({
+    size = 16,
+}: IconProps) => {
     return (
-        <IconContainer>
-            <Information color={'#000000'} width="16px" height="16px" />
+        <IconContainer size={size + 8}>
+            <Information
+                color={'#000000'}
+                width={`${size}px`}
+                height={`${size}px`}
+            />
         </IconContainer>
     )
 }
 
-export const IconMusicalNote: FunctionalComponent = () => {
+export const IconMusicalNote: FunctionalComponent<IconProps> = ({
+    size = 16,
+}: IconProps) => {
     return (
-        <IconContainer>
-            <MusicalNote color={'#000000'} width="16px" height="16px" />
+        <IconContainer size={size + 8}>
+            <MusicalNote
+                color={'#000000'}
+                width={`${size}px`}
+                height={`${size}px`}
+            />
         </IconContainer>
     )
 }
 
-export const IconPause: FunctionalComponent = () => {
+export const IconPause: FunctionalComponent<IconProps> = ({
+    size = 16,
+}: IconProps) => {
     return (
-        <IconContainer>
-            <Pause color={'#000000'} width="16px" height="16px" />
+        <IconContainer size={size + 8}>
+            <Pause color={'#000000'} width={`${size}px`} height={`${size}px`} />
         </IconContainer>
     )
 }
 
-export const IconPlay: FunctionalComponent = () => {
+export const IconPlay: FunctionalComponent<IconProps> = ({
+    size = 16,
+}: IconProps) => {
     return (
-        <IconContainer>
-            <Play color={'#000000'} width="16px" height="16px" />
+        <IconContainer size={size + 8}>
+            <Play color={'#000000'} width={`${size}px`} height={`${size}px`} />
         </IconContainer>
     )
 }
