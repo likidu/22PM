@@ -20,8 +20,6 @@ interface PopupProps {
 export const Popup: FunctionalComponent<PopupProps> = ({
     popups,
 }: PopupProps) => {
-    console.log(popups)
-
     return (
         <div id="popup">
             {popups &&

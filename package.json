@@ -60,6 +60,7 @@
     "preact-cli": "^3.0.5",
     "prettier": "^2.2.1",
     "react-intersection-observer": "^8.31.0",
+    "react-ionicons": "file:./react-ionicons",
     "sirv-cli": "^1.0.10",
     "tailwindcss": "^2.0.2",
     "tailwindcss-truncate-multiline": "^1.0.3",

@@ -1,12 +1,22 @@
 import { FunctionalComponent, h } from 'preact'
 import { useEffect, useRef, useState } from 'preact/hooks'
 import { route } from 'preact-router'
-import { useNavigation, usePopup, useSoftkey } from '../hooks'
+import { useNavigation, usePlayer, usePopup, useSoftkey } from '../hooks'
 
 import xiaoyuzhouFmApi from '../services/api'
-import { Content, List, ListItem, Menu, MenuType } from '../components'
+import {
+    Content,
+    IconEllipsisVertical,
+    IconMusicalNote,
+    List,
+    ListItem,
+    Menu,
+    MenuType,
+} from '../components'
 
 import { EpisodeType } from '../types/api.type'
+
+import { EllipsisVertical, MusicalNote } from 'react-ionicons'
 
 interface UpdatesProps {
     onSwitch: () => void
@@ -20,6 +30,7 @@ const Updates: FunctionalComponent<UpdatesProps> = ({
     const menuRef = useRef<HTMLDivElement>(null)
     const [episodes, setEpisodes] = useState<EpisodeType[]>([])
 
+    const [player] = usePlayer()
     const [, setNavigation, getCurrent] = useNavigation(
         'Updates',
         containerRef,
@@ -48,13 +59,18 @@ const Updates: FunctionalComponent<UpdatesProps> = ({
         if (uid) route(`/episode/${uid}`)
     }
 
+    const onKeyLeft = () => {
+        const { eid } = player.episode
+        if (eid && eid !== '') route(`/episode/${eid}`)
+    }
+
     useSoftkey(
         'Updates',
         {
-            left: 'Player',
-            right: 'Settings',
+            left: <IconMusicalNote />,
+            right: <IconEllipsisVertical />,
             onKeyCenter,
-            onKeyLeft: () => console.log('Updates onKeyLeft'),
+            onKeyLeft,
             onKeyRight: () => showMenu({ menus, containerRef: menuRef }),
             onKeyArrowLeft: onSwitch,
         },

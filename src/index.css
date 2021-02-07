@@ -15,7 +15,7 @@ body {
 }
 
 [nav-selected='true'] {
-    @apply bg-shakespeare-100;
+    @apply text-white bg-shakespeare-600;
 }
 
 .active-tab {

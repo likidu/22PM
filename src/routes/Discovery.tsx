@@ -3,10 +3,16 @@ import { useEffect, useRef, useState } from 'preact/hooks'
 import { route } from 'preact-router'
 
 import xiaoyuzhouFmApi from '../services/api'
-import { Content, List, ListItem } from '../components'
+import {
+    Content,
+    IconEllipsisVertical,
+    IconMusicalNote,
+    List,
+    ListItem,
+} from '../components'
 
 import { EditorPick } from '../types/api.type'
-import { useNavigation, useSoftkey } from '../hooks'
+import { useNavigation, usePlayer, useSoftkey } from '../hooks'
 
 interface DailyPickProps {
     daily: EditorPick
@@ -17,6 +23,7 @@ const DailyPick: FunctionalComponent<DailyPickProps> = ({
 }: DailyPickProps) => {
     const { date, picks } = daily
 
+    // 2021.2.2
     const [year, month, day] = date.split('-')
     return (
         <Fragment>
@@ -24,14 +31,21 @@ const DailyPick: FunctionalComponent<DailyPickProps> = ({
                 <span class="text-shakespeare-300">{`${year}.`}</span>
                 <span class="text-shakespeare-600">{`${month}.${day}`}</span>
             </h4>
-            {picks.map((pick, index) => (
-                <ListItem
-                    key={index}
-                    text={pick.episode.title}
-                    uid={pick.episode.eid}
-                    thumbnail={pick.episode.image.thumbnailUrl}
-                />
-            ))}
+            {picks.map((pick, index) => {
+                // This is for a wierd case that there is no image property returned.
+                const thumbnailUrl = pick.episode.image
+                    ? pick.episode.image.thumbnailUrl
+                    : 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs='
+
+                return (
+                    <ListItem
+                        key={index}
+                        text={pick.episode.title}
+                        uid={pick.episode.eid}
+                        thumbnail={thumbnailUrl}
+                    />
+                )
+            })}
         </Fragment>
     )
 }
@@ -46,6 +60,8 @@ const Discovery: FunctionalComponent<DiscoveryProps> = ({
     const containerRef = useRef<HTMLDivElement>(null)
     const listRef = useRef<HTMLDivElement>(null)
     const [editorPicks, setEditorPicks] = useState<EditorPick[]>([])
+
+    const [player] = usePlayer()
     const [, setNavigation, getCurrent] = useNavigation(
         'Discovery',
         containerRef,
@@ -58,13 +74,18 @@ const Discovery: FunctionalComponent<DiscoveryProps> = ({
         if (uid) route(`/episode/${uid}`)
     }
 
+    const onKeyLeft = () => {
+        const { eid } = player.episode
+        if (eid && eid !== '') route(`/episode/${eid}`)
+    }
+
     useSoftkey(
         'Discovery',
         {
-            left: 'Player',
-            right: 'Settings',
+            left: <IconMusicalNote />,
+            right: <IconEllipsisVertical />,
             onKeyCenter,
-            onKeyLeft: () => console.log('Discovery onKeyLeft'),
+            onKeyLeft,
             onKeyRight: () => console.log('Discovery onKeyRight'),
             onKeyArrowRight: onSwitch,
         },
@@ -78,7 +99,11 @@ const Discovery: FunctionalComponent<DiscoveryProps> = ({
         })()
     }, [])
 
-    useEffect(() => setNavigation(0), [editorPicks])
+    useEffect(() => {
+        console.log(editorPicks)
+
+        setNavigation(0)
+    }, [editorPicks])
 
     return (
         <Content containerRef={containerRef}>
