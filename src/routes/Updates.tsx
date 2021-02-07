@@ -67,8 +67,13 @@ const Updates: FunctionalComponent<UpdatesProps> = ({
     useSoftkey(
         'Updates',
         {
-            // Initial eid is ''
-            left: player.episode.eid === '' ? '' : <IconMusicalNote />,
+            // Initial eid is '', and rotate when playing
+            left:
+                player.episode.eid === '' ? (
+                    ''
+                ) : (
+                    <IconMusicalNote rotate={player.playing} />
+                ),
             right: <IconEllipsisVertical />,
             onKeyCenter,
             onKeyLeft,

@@ -75,15 +75,21 @@ export const IconInformation: FunctionalComponent<IconProps> = ({
     )
 }
 
-export const IconMusicalNote: FunctionalComponent<IconProps> = ({
+interface IconMusicalNoteProps extends IconProps {
+    rotate?: boolean
+}
+
+export const IconMusicalNote: FunctionalComponent<IconMusicalNoteProps> = ({
     size = 16,
-}: IconProps) => {
+    rotate = false,
+}: IconMusicalNoteProps) => {
     return (
         <IconContainer size={size + 8}>
             <MusicalNote
                 color={'#000000'}
                 width={`${size}px`}
                 height={`${size}px`}
+                rotate={rotate}
             />
         </IconContainer>
     )
