@@ -1,4 +1,4 @@
-import { cloneElement, FunctionalComponent, h } from 'preact'
+import { FunctionalComponent, h } from 'preact'
 import {
     ChatbubbleOutline,
     EllipsisVertical,
@@ -18,8 +18,11 @@ const IconContainer: FunctionalComponent<IconContainerProps> = ({
     children,
 }: IconContainerProps) => {
     return (
+        // TODO: make Tailwind CSS customized size work.
+        // Now it seems the customized 'w-24' is not working in Firefox 48
         <div
-            class={`flex m-3 justify-center items-center bg-white rounded-full shadow w-${size} h-${size}`}
+            class={`flex m-3 justify-center items-center bg-white rounded-full shadow`}
+            style={{ width: `${size}px`, height: `${size}px` }}
         >
             {children}
         </div>
@@ -27,7 +30,7 @@ const IconContainer: FunctionalComponent<IconContainerProps> = ({
 }
 
 interface IconProps {
-    size: number
+    size?: number
 }
 
 export const IconChatbbble: FunctionalComponent<IconProps> = ({

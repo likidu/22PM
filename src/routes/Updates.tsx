@@ -67,14 +67,15 @@ const Updates: FunctionalComponent<UpdatesProps> = ({
     useSoftkey(
         'Updates',
         {
-            left: <IconMusicalNote />,
+            // Initial eid is ''
+            left: player.episode.eid === '' ? '' : <IconMusicalNote />,
             right: <IconEllipsisVertical />,
             onKeyCenter,
             onKeyLeft,
             onKeyRight: () => showMenu({ menus, containerRef: menuRef }),
             onKeyArrowLeft: onSwitch,
         },
-        [episodes],
+        [episodes, player],
     )
 
     useEffect(() => {

@@ -9,6 +9,7 @@ import {
     Content,
     IconChatbbble,
     IconInformation,
+    IconPause,
     IconPlay,
     ProgressBar,
 } from '../components'
@@ -56,7 +57,7 @@ const Episode: FunctionalComponent<EpisodeProps> = ({ eid }: EpisodeProps) => {
     useSoftkey(
         'Episode',
         {
-            center: <IconPlay />,
+            center: playing ? <IconPause /> : <IconPlay />,
             left: <IconInformation />,
             right: <IconChatbbble />,
             onKeyCenter,
@@ -68,7 +69,7 @@ const Episode: FunctionalComponent<EpisodeProps> = ({ eid }: EpisodeProps) => {
             onKeyArrowLeft,
             onKeyArrowRight,
         },
-        [episode],
+        [episode, player],
     )
 
     useEffect(() => {

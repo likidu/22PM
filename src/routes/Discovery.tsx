@@ -23,7 +23,7 @@ const DailyPick: FunctionalComponent<DailyPickProps> = ({
 }: DailyPickProps) => {
     const { date, picks } = daily
 
-    // 2021.2.2
+    // Title format: 2021.2.2
     const [year, month, day] = date.split('-')
     return (
         <Fragment>
@@ -69,11 +69,13 @@ const Discovery: FunctionalComponent<DiscoveryProps> = ({
         'y',
     )
 
+    // Open selected episode
     const onKeyCenter = () => {
         const { uid } = getCurrent()
         if (uid) route(`/episode/${uid}`)
     }
 
+    // Open playing episode
     const onKeyLeft = () => {
         const { eid } = player.episode
         if (eid && eid !== '') route(`/episode/${eid}`)
@@ -82,14 +84,15 @@ const Discovery: FunctionalComponent<DiscoveryProps> = ({
     useSoftkey(
         'Discovery',
         {
-            left: <IconMusicalNote />,
+            // Initial eid is ''
+            left: player.episode.eid === '' ? '' : <IconMusicalNote />,
             right: <IconEllipsisVertical />,
             onKeyCenter,
             onKeyLeft,
             onKeyRight: () => console.log('Discovery onKeyRight'),
             onKeyArrowRight: onSwitch,
         },
-        [editorPicks],
+        [editorPicks, player],
     )
 
     useEffect(() => {
