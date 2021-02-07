@@ -4,7 +4,7 @@
   "version": "0.1.0",
   "license": "MIT",
   "scripts": {
-    "build": "NODE_ENV=production preact build --no-prerender",
+    "build": "NODE_ENV=production preact build --no-prerender && cp manifest.webapp ./build/.",
     "serve": "sirv build --port 8080 --cors --single",
     "dev": "NODE_ENV=development preact watch --no-prerender",
     "lint": "eslint 'src/**/*.{js,jsx,ts,tsx}'",
@@ -50,6 +50,7 @@
     "eslint-plugin-react": "^7.22.0",
     "eslint-plugin-react-hooks": "^4.2.0",
     "husky": "^4.3.8",
+    "intersection-observer": "^0.12.0",
     "jest": "^26.6.3",
     "jest-preset-preact": "^4.0.2",
     "lint-staged": "^10.5.3",
@@ -58,8 +59,11 @@
     "postcss-loader": "^4.2.0",
     "preact-cli": "^3.0.5",
     "prettier": "^2.2.1",
+    "react-intersection-observer": "^8.31.0",
+    "react-ionicons": "file:./react-ionicons",
     "sirv-cli": "^1.0.10",
     "tailwindcss": "^2.0.2",
+    "tailwindcss-truncate-multiline": "^1.0.3",
     "typescript": "^4.1.3"
   }
 }

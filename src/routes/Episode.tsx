@@ -5,7 +5,14 @@ import { usePlayer, useSoftkey } from '../hooks'
 import xiaoyuzhouFmApi from '../services/api'
 import { EpisodeType } from '../types/api.type'
 
-import { Content, ProgressBar } from '../components'
+import {
+    Content,
+    IconChatbbble,
+    IconInformation,
+    IconPause,
+    IconPlay,
+    ProgressBar,
+} from '../components'
 
 interface EpisodeProps {
     eid: string
@@ -44,15 +51,15 @@ const Episode: FunctionalComponent<EpisodeProps> = ({ eid }: EpisodeProps) => {
 
     const onKeyArrowRight = () => {
         setSkip(true)
-        setProgress(progress => progress + 20)
+        setProgress(progress => progress + 40)
     }
 
     useSoftkey(
         'Episode',
         {
-            center: 'Play',
-            left: 'Info',
-            right: 'Settings',
+            center: playing ? <IconPause /> : <IconPlay />,
+            left: <IconInformation />,
+            right: <IconChatbbble />,
             onKeyCenter,
             onKeyLeft: () => console.log('Episode onKeyLeft'),
             onKeyRight: () => console.log('Episode onKeyRight'),
@@ -62,7 +69,7 @@ const Episode: FunctionalComponent<EpisodeProps> = ({ eid }: EpisodeProps) => {
             onKeyArrowLeft,
             onKeyArrowRight,
         },
-        [episode],
+        [episode, player],
     )
 
     useEffect(() => {

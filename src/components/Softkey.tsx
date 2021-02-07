@@ -4,18 +4,17 @@ import type { SoftkeyConfig, KeyHandler } from '../types/softkey.type'
 
 interface SoftkeyButtonProps {
     className: string
-    text: string
     handler: KeyHandler
+    content: JSX.Element | string
 }
-
 const SoftkeyButton: FunctionalComponent<SoftkeyButtonProps> = ({
     className,
-    text,
     handler,
+    content,
 }: SoftkeyButtonProps) => {
     return (
         <label class={className} onClick={handler}>
-            {text}
+            {content}
         </label>
     )
 }
@@ -138,25 +137,25 @@ export const Softkey: FunctionalComponent<SoftkeyConfig> = ({
             {left && onKeyLeft && (
                 <SoftkeyButton
                     key="left"
-                    className="font-semibold w-full truncate text-left"
-                    text={left}
+                    className="flex justify-start font-semibold w-full truncate"
                     handler={onKeyLeft}
+                    content={left}
                 />
             )}
             {center && onKeyCenter && (
                 <SoftkeyButton
                     key="center"
-                    className="font-bold text-center uppercase"
-                    text={center}
+                    className="font-bold text-center min-w-1/4 truncate uppercase"
                     handler={onKeyCenter}
+                    content={center}
                 />
             )}
             {right && onKeyRight && (
                 <SoftkeyButton
                     key="right"
-                    className="font-semibold w-full truncate text-right"
-                    text={right}
+                    className="flex justify-end font-semibold w-full truncate"
                     handler={onKeyRight}
+                    content={right}
                 />
             )}
         </footer>

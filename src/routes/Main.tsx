@@ -10,10 +10,14 @@ const Main: FunctionalComponent = () => {
         <Fragment>
             <header class="text-center">
                 <nav>
-                    <Link activeClassName="active-tab" href="/">
+                    <Link activeClassName="active-tab" class="px-2" href="/">
                         Discovery
                     </Link>
-                    <Link activeClassName="active-tab" href="/updates">
+                    <Link
+                        activeClassName="active-tab"
+                        class="px-2"
+                        href="/updates"
+                    >
                         Updates
                     </Link>
                 </nav>

@@ -1,5 +1,7 @@
 export * from './Content'
+export * from './LazyImage'
 export * from './Menu'
+export * from './Icons'
 export * from './List'
 export * from './ListItem'
 export * from './Player'

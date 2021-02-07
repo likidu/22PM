@@ -1,0 +1,8 @@
+export { default as ChatbubbleOutline } from './ChatbubbleOutline'
+export { default as EllipsisVertical } from './EllipsisVertical'
+export { default as FileTrayStackedOutline } from './FileTrayStackedOutline'
+export { default as Information } from './Information'
+export { default as MusicalNote } from './MusicalNote'
+export { default as Pause } from './Pause'
+export { default as Play } from './Play'
+export { default as Settings } from './Settings'

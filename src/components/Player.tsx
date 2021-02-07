@@ -52,7 +52,6 @@ export const Player: FunctionalComponent<PlayerProps> = ({
 
     return (
         <div id="player">
-            <h2 class="bg-green-50">{episode.title}</h2>
             <audio
                 ref={audioRef}
                 type="audio/mpeg"

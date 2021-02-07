@@ -1,9 +1,9 @@
 export type KeyHandler = (ev: KeyboardEvent | MouseEvent) => void
 
 export interface SoftkeyConfig {
-    center?: string
-    left?: string
-    right?: string
+    center?: JSX.Element | string
+    left?: JSX.Element | string
+    right?: JSX.Element | string
     onKeyCenter?: KeyHandler
     onKeyLeft?: KeyHandler
     onKeyRight?: KeyHandler
