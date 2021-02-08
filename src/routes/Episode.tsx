@@ -1,4 +1,4 @@
-import { Fragment, FunctionalComponent, h } from 'preact'
+import { FunctionalComponent, h } from 'preact'
 import { useRef, useEffect, useState } from 'preact/hooks'
 
 import { usePlayer, useSoftkey } from '../hooks'
@@ -7,12 +7,13 @@ import { EpisodeType } from '../types/api.type'
 
 import {
     Content,
+    Cover,
     IconChatbbble,
     IconInformation,
     IconPause,
     IconPlay,
-    ProgressBar,
 } from '../components'
+import { Details } from '../components/Details'
 
 interface EpisodeProps {
     eid: string
@@ -33,6 +34,33 @@ const Episode: FunctionalComponent<EpisodeProps> = ({ eid }: EpisodeProps) => {
     const [playing, setPlaying] = useState(player.playing)
     const [progress, setProgress] = useState(player.progress)
     const [skip, setSkip] = useState(false)
+    const [detailedView, setDetailedView] = useState(false)
+
+    const placeholder =
+        'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'
+
+    const renderContent = () => {
+        if (detailedView)
+            return (
+                <Details
+                    episodeTitle={episode.title}
+                    podcastTitle={episode.podcast.title}
+                    podcastLogo={episode.podcast.image.thumbnailUrl}
+                    shownotes={episode.shownotes}
+                />
+            )
+        else
+            return (
+                <Cover
+                    episodeTitle={episode.title}
+                    podcastTitle={episode.podcast.title}
+                    coverImage={
+                        episode.image ? episode.image.smallPicUrl : placeholder
+                    }
+                    progress={progress / episode.duration}
+                />
+            )
+    }
 
     const onKeyCenter = () => {
         // Update the reducer only when a new episode is about to play
@@ -61,7 +89,7 @@ const Episode: FunctionalComponent<EpisodeProps> = ({ eid }: EpisodeProps) => {
             left: <IconInformation />,
             right: <IconChatbbble />,
             onKeyCenter,
-            onKeyLeft: () => console.log('Episode onKeyLeft'),
+            onKeyLeft: () => setDetailedView(detailedView => !detailedView),
             onKeyRight: () => console.log('Episode onKeyRight'),
             onKeyBackspace: () => history.back(),
             onKeyArrowUp: () => volume.requestUp(),
@@ -72,10 +100,12 @@ const Episode: FunctionalComponent<EpisodeProps> = ({ eid }: EpisodeProps) => {
         [episode, player],
     )
 
+    // Set playing state
     useEffect(() => {
         setPlayerPlaying(playing)
     }, [playing])
 
+    // Skip forward and back
     useEffect(() => {
         if (skip) {
             setPlayerProgress(progress)
@@ -85,7 +115,7 @@ const Episode: FunctionalComponent<EpisodeProps> = ({ eid }: EpisodeProps) => {
 
     // Get player progress to be used for ProgressBar
     useEffect(() => {
-        setProgress(player.progress)
+        if (player.episode.eid === episode.eid) setProgress(player.progress)
     }, [player.progress])
 
     useEffect(() => {
@@ -100,17 +130,9 @@ const Episode: FunctionalComponent<EpisodeProps> = ({ eid }: EpisodeProps) => {
     }, [episode])
 
     return (
-        <Fragment>
-            <header class="text-center">
-                <h1 class="font-light">Episode</h1>
-            </header>
-            <Content containerRef={containerRef}>
-                <h2>{episode.title}</h2>
-                <ProgressBar progress={progress / episode.duration} />
-
-                <div dangerouslySetInnerHTML={{ __html: episode.shownotes }} />
-            </Content>
-        </Fragment>
+        <Content containerRef={containerRef}>
+            {episode && episode.podcast && renderContent()}
+        </Content>
     )
 }
 

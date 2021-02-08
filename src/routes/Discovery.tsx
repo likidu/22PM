@@ -107,11 +107,7 @@ const Discovery: FunctionalComponent<DiscoveryProps> = ({
         })()
     }, [])
 
-    useEffect(() => {
-        console.log(editorPicks)
-
-        setNavigation(0)
-    }, [editorPicks])
+    useEffect(() => setNavigation(0), [editorPicks])
 
     return (
         <Content containerRef={containerRef}>

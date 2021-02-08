@@ -1,4 +1,6 @@
 export * from './Content'
+export * from './Cover'
+export * from './Details'
 export * from './LazyImage'
 export * from './Menu'
 export * from './Icons'
