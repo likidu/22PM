@@ -55,7 +55,7 @@ export const Menu: FunctionalComponent<MenuProps> = ({
 
     return (
         <div id="menu" ref={containerRef}>
-            <h4>Options</h4>
+            <h4 class="px-3 py-1 font-bold text-white">Options</h4>
             <List containerRef={listRef}>
                 {menus && menus.length > 0 ? (
                     menus.map((menu, index) => (

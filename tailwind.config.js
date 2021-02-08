@@ -25,6 +25,7 @@ module.exports = {
                 16: '16px',
                 20: '20px',
                 24: '24px',
+                30: '30px',
                 32: '32px',
                 48: '48px',
             },
@@ -39,6 +40,7 @@ module.exports = {
                 16: '16px',
                 20: '20px',
                 24: '24px',
+                30: '30px',
                 32: '32px',
                 48: '48px',
             },
@@ -49,9 +51,16 @@ module.exports = {
                 '3/4': '75%',
                 full: '100%',
             },
+            inset: {
+                30: '30px',
+            },
             boxShadow: {
                 DEFAULT:
                     '0 1px 3px 0 rgba(0, 0, 0, 0.32), 0 1px 2px 0 rgba(0, 0, 0, 0.24)',
+            },
+            zIndex: {
+                100: 100,
+                200: 200,
             },
         },
     },

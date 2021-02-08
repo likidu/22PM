@@ -18,12 +18,18 @@ body {
     @apply text-white bg-shakespeare-600;
 }
 
+/* Softkey height: 30px */
+.softkey {
+    @apply absolute bottom-0 h-30 flex items-center w-full max-w-full z-200;
+}
+
+/* Popup container bottom: 30 */
 .popup-entity {
-    @apply absolute overflow-hidden inset-x-0 bottom-0 max-h-3/4 bg-white;
+    @apply absolute overflow-hidden inset-x-0 bottom-30 max-h-3/4;
 }
 
 .shader {
-    @apply absolute inset-0 bg-black opacity-80;
+    @apply absolute inset-0 bg-black opacity-90;
 }
 
 .active-tab {

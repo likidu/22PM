@@ -16,8 +16,6 @@ import {
 
 import { EpisodeType } from '../types/api.type'
 
-import { EllipsisVertical, MusicalNote } from 'react-ionicons'
-
 interface UpdatesProps {
     onSwitch: () => void
 }

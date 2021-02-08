@@ -12,7 +12,7 @@ export const List: FunctionalComponent<ListProps> = ({
     return (
         <div
             ref={containerRef}
-            class="w-full h-full overflow-x-hidden overflow-y-scroll"
+            class="w-full h-full overflow-x-hidden overflow-y-scroll bg-white"
         >
             {children}
         </div>

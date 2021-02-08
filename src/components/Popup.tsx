@@ -30,13 +30,13 @@ export const Popup: FunctionalComponent<PopupProps> = ({
     if (popups.length === 0) {
         return <Fragment />
     }
-    let zIndex = 50
+    let zIndex = 100
     const nextZIndex = () => {
         zIndex += 2
         return zIndex
     }
     // The shader is just before the last popup
-    const shaderZIndex = 50 + popups.length * 2 - 1
+    const shaderZIndex = 100 + popups.length * 2 - 1
     const lastIndex = popups.length - 1
     const hideOthers =
         popups[lastIndex] && popups[lastIndex].options
@@ -44,7 +44,7 @@ export const Popup: FunctionalComponent<PopupProps> = ({
             : true
 
     return (
-        <div id="popup" class="z-50">
+        <div id="popup" class="z-100">
             <div class="shader" style={{ zIndex: shaderZIndex }} />
             {popups &&
                 popups.length > 0 &&
