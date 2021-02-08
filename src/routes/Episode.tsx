@@ -1,4 +1,4 @@
-import { FunctionalComponent, h } from 'preact'
+import { Fragment, FunctionalComponent, h } from 'preact'
 import { useRef, useEffect, useState } from 'preact/hooks'
 
 import { usePlayer, useSoftkey } from '../hooks'
@@ -14,6 +14,8 @@ import {
     IconPlay,
 } from '../components'
 import { Details } from '../components/Details'
+
+import Palette from 'react-palette'
 
 interface EpisodeProps {
     eid: string
@@ -39,13 +41,14 @@ const Episode: FunctionalComponent<EpisodeProps> = ({ eid }: EpisodeProps) => {
     const placeholder =
         'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'
 
-    const renderContent = () => {
+    const renderContent = (color: string | undefined) => {
         if (detailedView)
             return (
                 <Details
                     episodeTitle={episode.title}
                     podcastTitle={episode.podcast.title}
                     podcastLogo={episode.podcast.image.thumbnailUrl}
+                    textColor={color ? color : '#444'}
                     shownotes={episode.shownotes}
                 />
             )
@@ -57,6 +60,7 @@ const Episode: FunctionalComponent<EpisodeProps> = ({ eid }: EpisodeProps) => {
                     coverImage={
                         episode.image ? episode.image.smallPicUrl : placeholder
                     }
+                    textColor={color ? color : '#444'}
                     progress={progress / episode.duration}
                 />
             )
@@ -74,12 +78,12 @@ const Episode: FunctionalComponent<EpisodeProps> = ({ eid }: EpisodeProps) => {
 
     const onKeyArrowLeft = () => {
         setSkip(true)
-        setProgress(progress => progress - 20)
+        setProgress(progress => progress - 15)
     }
 
     const onKeyArrowRight = () => {
         setSkip(true)
-        setProgress(progress => progress + 40)
+        setProgress(progress => progress + 30)
     }
 
     useSoftkey(
@@ -130,9 +134,27 @@ const Episode: FunctionalComponent<EpisodeProps> = ({ eid }: EpisodeProps) => {
     }, [episode])
 
     return (
-        <Content containerRef={containerRef}>
-            {episode && episode.podcast && renderContent()}
-        </Content>
+        <Fragment>
+            {/* Get vibrant color from the episode cover */}
+            {episode.image && (
+                <Palette src={episode.image.smallPicUrl}>
+                    {({ data }) => (
+                        <Content
+                            containerRef={containerRef}
+                            style={{
+                                'background-color': detailedView
+                                    ? 'white'
+                                    : data.lightMuted,
+                            }}
+                        >
+                            {episode &&
+                                episode.podcast &&
+                                renderContent(data.darkVibrant)}
+                        </Content>
+                    )}
+                </Palette>
+            )}
+        </Fragment>
     )
 }
 

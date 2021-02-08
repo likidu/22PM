@@ -44,18 +44,12 @@ module.exports = {
             },
             boxShadow: {
                 DEFAULT:
-                    '0 1px 3px 0 rgba(0, 0, 0, 0.4), 0 1px 2px 0 rgba(0, 0, 0, 0.24)',
-            },
-            truncate: {
-                lines: {
-                    3: '3',
-                    5: '5',
-                },
+                    '0 1px 3px 0 rgba(0, 0, 0, 0.32), 0 1px 2px 0 rgba(0, 0, 0, 0.24)',
             },
         },
     },
     variants: {
         extend: {},
     },
-    plugins: [require('tailwindcss-truncate-multiline')()],
+    plugins: [],
 }

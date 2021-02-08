@@ -19,7 +19,7 @@ export const ListItem: FunctionalComponent<ListItemProps> = ({
             class="flex justify-between p-2"
         >
             {thumbnail && <LazyImage src={thumbnail} />}
-            <p class="text-left w-full ml-2 truncate-3-lines">{text}</p>
+            <p class="text-left w-full ml-2">{text}</p>
         </div>
     )
 }

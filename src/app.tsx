@@ -37,7 +37,10 @@ const App: FunctionalComponent = () => {
         <PlayerContext.Provider value={{ player, dispatch }}>
             <SoftkeyContext.Provider value={{ softkey, dispatch }}>
                 <PopupContext.Provider value={{ popupState, setPopupState }}>
-                    <div id="app" class="h-screen relative flex flex-col">
+                    <div
+                        id="app"
+                        class="font-kaios h-screen relative flex flex-col"
+                    >
                         <Router history={createHashHistory()}>
                             <Route path="/:*" component={Main} />
                             <Route path="/episode/:eid" component={Episode} />
