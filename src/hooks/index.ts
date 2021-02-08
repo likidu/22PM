@@ -1,3 +1,4 @@
+export * from './useLineClamp'
 export * from './useNavigation'
 export * from './usePlayer'
 export * from './usePopup'

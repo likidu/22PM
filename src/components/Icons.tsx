@@ -21,7 +21,7 @@ const IconContainer: FunctionalComponent<IconContainerProps> = ({
         // TODO: make Tailwind CSS customized size work.
         // Now it seems the customized 'w-24' is not working in Firefox 48
         <div
-            class={`flex m-3 justify-center items-center bg-white rounded-full shadow`}
+            class={`flex justify-center items-center bg-white rounded-full shadow opacity-80`}
             style={{ width: `${size}px`, height: `${size}px` }}
         >
             {children}

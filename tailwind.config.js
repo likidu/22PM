@@ -42,6 +42,13 @@ module.exports = {
                 32: '32px',
                 48: '48px',
             },
+            maxHeight: {
+                0: '0',
+                '1/4': '25%',
+                '1/2': '50%',
+                '3/4': '75%',
+                full: '100%',
+            },
             boxShadow: {
                 DEFAULT:
                     '0 1px 3px 0 rgba(0, 0, 0, 0.32), 0 1px 2px 0 rgba(0, 0, 0, 0.24)',

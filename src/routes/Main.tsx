@@ -8,7 +8,7 @@ import Updates from './Updates'
 const Main: FunctionalComponent = () => {
     return (
         <Fragment>
-            <header class="text-center">
+            <header class="text-center uppercase">
                 <nav>
                     <Link activeClassName="active-tab" class="px-2" href="/">
                         Discovery

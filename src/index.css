@@ -1,4 +1,4 @@
-/* @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap'); */
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -16,6 +16,14 @@ body {
 
 [nav-selected='true'] {
     @apply text-white bg-shakespeare-600;
+}
+
+.popup-entity {
+    @apply absolute overflow-hidden inset-x-0 bottom-0 max-h-3/4 bg-white;
+}
+
+.shader {
+    @apply absolute inset-0 bg-black opacity-80;
 }
 
 .active-tab {

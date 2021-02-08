@@ -15,7 +15,10 @@ export interface PopupState<T> {
     props: T & {
         close: () => void
         closeAll: () => void
-        // [key: string]: T
+    }
+    // TODO: should use CSSProperties
+    style: {
+        [key: string]: string | number | null | undefined
     }
     options: PopupOptions
 }

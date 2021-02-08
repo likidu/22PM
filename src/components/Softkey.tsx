@@ -100,6 +100,14 @@ export const Softkey: FunctionalComponent<SoftkeyConfig> = ({
         'Backspace',
     ]
 
+    // If softkey is component, put extra paddings
+    const floatMargin =
+        typeof center === 'object' ||
+        typeof left === 'object' ||
+        typeof right === 'object'
+            ? 'px-3 pb-3'
+            : ''
+
     const parseKey = (ev: KeyboardEvent) => {
         // Simulate soft keys for testing purposes
         if (ev.shiftKey && ev.key === 'ArrowLeft') {
@@ -132,7 +140,9 @@ export const Softkey: FunctionalComponent<SoftkeyConfig> = ({
     }, [])
 
     return (
-        <footer class="absolute bottom-0 flex items-center w-full max-w-full">
+        <footer
+            class={`absolute bottom-0 flex items-center w-full max-w-full ${floatMargin}`}
+        >
             <softkey ref={softkeyRef} />
             {left && onKeyLeft && (
                 <SoftkeyButton
@@ -145,7 +155,7 @@ export const Softkey: FunctionalComponent<SoftkeyConfig> = ({
             {center && onKeyCenter && (
                 <SoftkeyButton
                     key="center"
-                    className="font-bold text-center min-w-1/4 truncate uppercase"
+                    className="flex justify-center font-bold text-center min-w-1/4 truncate uppercase"
                     handler={onKeyCenter}
                     content={center}
                 />
