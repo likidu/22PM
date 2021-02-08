@@ -7,6 +7,7 @@ import axios, {
 } from 'axios'
 
 import type {
+    User,
     PodcastType,
     RefreshTokenType,
     EpisodeType,
@@ -128,7 +129,7 @@ class XiaoyuzhouFmApi {
 
     /**
      *
-     * @param mobile
+     * @param refreshToken
      * @returns {AxiosPromise<RefreshToken>} x-jike-access-token, x-jike-refresh-token, success
      */
     private appAuthTokensRefresh = (
@@ -207,6 +208,36 @@ class XiaoyuzhouFmApi {
      */
     public getPodcast = (pid: string): Promise<PodcastType> =>
         this.instance.get(`/v1/podcast/get?pid=${pid}`)
+
+    /**
+     * Get verification code
+     */
+    public sendCode = (mobile: number): Promise<void> => {
+        const areaCode = 86
+        return this.instance.post('/v1/auth/sendCode', {
+            mobilePhoneNumber: mobile.toString(),
+            areaCode: `+${areaCode.toString()}`,
+        })
+    }
+
+    /**
+     * Login with SMS
+     */
+    public loginWithSMS = async (
+        mobile: number,
+        verify: number,
+    ): Promise<User> => {
+        const areaCode = 86
+        const result: { user: User } = await this.instance.post(
+            '/v1/auth/loginOrSignUpWithSMS',
+            {
+                mobilePhoneNumber: mobile.toString(),
+                areaCode: `+${areaCode.toString()}`,
+                verifyCode: verify.toString(),
+            },
+        )
+        return result.user
+    }
 }
 
 // Returns a singleton of the class instance

@@ -12,10 +12,6 @@ interface Image {
     thumbnailUrl: string
 }
 
-interface Avatar {
-    picture: Image
-}
-
 export interface Mobile {
     mobilePhoneNumber: string
     areacode: string
@@ -25,7 +21,9 @@ export interface Mobile {
 export interface User {
     type: 'USER'
     uid: string
-    avatar: Avatar
+    avatar: {
+        picture: Image
+    }
     nickname: string
     isNicknameSet: boolean
     authorship: []

@@ -4,6 +4,7 @@ import { Route, Router } from 'preact-router'
 import { createHashHistory } from 'history'
 
 import Main from './routes/Main'
+import Auth from './routes/Auth'
 import Episode from './routes/Episode'
 import Subscription from './routes/Subscription'
 import NotFound from './routes/NotFound'
@@ -43,6 +44,7 @@ const App: FunctionalComponent = () => {
                     >
                         <Router history={createHashHistory()}>
                             <Route path="/:*" component={Main} />
+                            <Route path="/auth" component={Auth} />
                             <Route path="/episode/:eid" component={Episode} />
                             <Route
                                 path="/subscription"
