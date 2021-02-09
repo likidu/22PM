@@ -212,10 +212,10 @@ class XiaoyuzhouFmApi {
     /**
      * Get verification code
      */
-    public sendCode = (mobile: number): Promise<void> => {
+    public sendCode = (mobile: string): Promise<void> => {
         const areaCode = 86
         return this.instance.post('/v1/auth/sendCode', {
-            mobilePhoneNumber: mobile.toString(),
+            mobilePhoneNumber: mobile,
             areaCode: `+${areaCode.toString()}`,
         })
     }
@@ -224,16 +224,16 @@ class XiaoyuzhouFmApi {
      * Login with SMS
      */
     public loginWithSMS = async (
-        mobile: number,
-        verify: number,
+        mobile: string,
+        verify: string,
     ): Promise<User> => {
         const areaCode = 86
         const result: { user: User } = await this.instance.post(
             '/v1/auth/loginOrSignUpWithSMS',
             {
-                mobilePhoneNumber: mobile.toString(),
+                mobilePhoneNumber: mobile,
                 areaCode: `+${areaCode.toString()}`,
-                verifyCode: verify.toString(),
+                verifyCode: verify,
             },
         )
         return result.user

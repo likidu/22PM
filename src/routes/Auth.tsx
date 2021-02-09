@@ -2,6 +2,7 @@ import { Fragment, FunctionalComponent, h } from 'preact'
 import { useEffect, useRef, useState } from 'preact/hooks'
 import { Content } from '../components'
 import { useNavigation, useRange, useSoftkey } from '../hooks'
+import xiaoyuzhouFmApi from '../services/api'
 
 interface AuthProps {
     hello: string
@@ -10,8 +11,8 @@ interface AuthProps {
 const Auth: FunctionalComponent<AuthProps> = ({ hello }: AuthProps) => {
     const containerRef = useRef<HTMLDivElement>(null)
     const formRef = useRef<HTMLDivElement>(null)
-    const [mobile, setMobile] = useState('')
-    const [verify, setVeify] = useState('')
+    const [mobilePhone, setMobilePhone] = useState('')
+    const [verifyCode, setVeifyCode] = useState('')
 
     const [currentStep, prevAuth, nextAuth] = useRange(0, 1)
     const [, setNavigation, getCurrent] = useNavigation(
@@ -25,18 +26,19 @@ const Auth: FunctionalComponent<AuthProps> = ({ hello }: AuthProps) => {
     const handleMobileInput = (ev: Event) => {
         if (ev.target instanceof HTMLInputElement) {
             const { value } = ev.target
-            setMobile(value)
+            setMobilePhone(value)
         }
     }
 
-    const handleSendCode = () => {
-        console.log('Mobile', mobile)
+    const handleSendCode = async () => {
+        console.log('Mobile', mobilePhone)
+        await xiaoyuzhouFmApi.sendCode(mobilePhone)
     }
 
     const onSendCode = () => {
         const { uid } = getCurrent()
         if (uid === 'send-code') {
-            handleSendCode()
+            void handleSendCode()
             nextAuth()
         }
     }
@@ -45,18 +47,19 @@ const Auth: FunctionalComponent<AuthProps> = ({ hello }: AuthProps) => {
     const handleVerifyInput = (ev: Event) => {
         if (ev.target instanceof HTMLInputElement) {
             const { value } = ev.target
-            setVeify(value)
+            setVeifyCode(value)
         }
     }
 
-    const handleVerifyCode = () => {
-        console.log('Verify code', verify)
+    const handleVerifyCode = async () => {
+        console.log('Verify code', verifyCode)
+        await xiaoyuzhouFmApi.loginWithSMS(mobilePhone, verifyCode)
     }
 
     const onVerifyCode = () => {
         const { uid } = getCurrent()
         if (uid === 'verify-code') {
-            handleVerifyCode()
+            void handleVerifyCode()
         }
     }
 
@@ -70,7 +73,11 @@ const Auth: FunctionalComponent<AuthProps> = ({ hello }: AuthProps) => {
         },
     ]
 
-    useSoftkey('Auth', softkeyConfig[currentStep], [mobile, currentStep])
+    useSoftkey('Auth', softkeyConfig[currentStep], [
+        mobilePhone,
+        verifyCode,
+        currentStep,
+    ])
 
     useEffect(() => setNavigation(0), [currentStep])
 
@@ -84,7 +91,7 @@ const Auth: FunctionalComponent<AuthProps> = ({ hello }: AuthProps) => {
                             name="mobilePhone"
                             id="mobilePhone"
                             placeholder="Mobile phone"
-                            value={mobile}
+                            value={mobilePhone}
                             onInput={handleMobileInput}
                             data-selectable
                         />
@@ -105,7 +112,7 @@ const Auth: FunctionalComponent<AuthProps> = ({ hello }: AuthProps) => {
                             name="verifyCode"
                             id="verifyCode"
                             placeholder="Verify Code"
-                            value={verify}
+                            value={verifyCode}
                             onInput={handleVerifyInput}
                             data-selectable
                         />
