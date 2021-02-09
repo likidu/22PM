@@ -8,13 +8,7 @@ import { Content, List, ListItem } from '../components'
 
 import { PodcastType } from '../types/api.type'
 
-interface SubscriptionProps {
-    onSwitch: () => void
-}
-
-const Subscription: FunctionalComponent<SubscriptionProps> = ({
-    onSwitch,
-}: SubscriptionProps) => {
+const Subscription: FunctionalComponent = () => {
     const containerRef = useRef<HTMLDivElement>(null)
     const listRef = useRef<HTMLDivElement>(null)
     const [podcasts, setPodcasts] = useState<PodcastType[]>([])
@@ -24,7 +18,6 @@ const Subscription: FunctionalComponent<SubscriptionProps> = ({
     useSoftkey('Subscription', {
         right: 'Close',
         onKeyRight: onClose,
-        onKeyArrowLeft: onSwitch,
         onKeyBackspace: onClose,
     })
 

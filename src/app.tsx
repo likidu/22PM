@@ -1,6 +1,6 @@
 import { FunctionalComponent, h } from 'preact'
 import { useReducer, useState } from 'preact/hooks'
-import { Route, Router } from 'preact-router'
+import { route, Route, Router, RouterOnChangeArgs } from 'preact-router'
 import { createHashHistory } from 'history'
 
 import Main from './routes/Main'
@@ -20,8 +20,8 @@ import { PlayerContext, PopupContext, SoftkeyContext } from './contexts'
 import { reducer } from './reducers'
 import { InitialPopupState, PopupState } from './types/popup.type'
 
-localStorage.setItem('access-token', INIT_ACCESS_TOKEN)
-localStorage.setItem('refresh-token', INIT_REFRESH_TOKEN)
+// localStorage.setItem('access-token', INIT_ACCESS_TOKEN)
+// localStorage.setItem('refresh-token', INIT_REFRESH_TOKEN)
 
 const App: FunctionalComponent = () => {
     const initialState = {
@@ -34,6 +34,14 @@ const App: FunctionalComponent = () => {
         PopupState<InitialPopupState>[]
     >([])
 
+    const handleRouteChange = (ev: RouterOnChangeArgs) => {
+        const { url } = ev
+        const isAuthed = localStorage.getItem('authed')
+        if (url === '/') {
+            if (!isAuthed || !JSON.parse(isAuthed)) route('/auth', true)
+        }
+    }
+
     return (
         <PlayerContext.Provider value={{ player, dispatch }}>
             <SoftkeyContext.Provider value={{ softkey, dispatch }}>
@@ -42,14 +50,14 @@ const App: FunctionalComponent = () => {
                         id="app"
                         class="font-kaios h-screen relative flex flex-col"
                     >
-                        <Router history={createHashHistory()}>
-                            <Route path="/:*" component={Main} />
-                            <Route path="/auth" component={Auth} />
+                        <Router
+                            history={createHashHistory()}
+                            onChange={handleRouteChange}
+                        >
+                            <Main path="/:*" />
+                            <Auth path="/auth" />
                             <Route path="/episode/:eid" component={Episode} />
-                            <Route
-                                path="/subscription"
-                                component={Subscription}
-                            />
+                            <Subscription path="/subscription" />
                             <NotFound default />
                         </Router>
                         <Player {...player} />

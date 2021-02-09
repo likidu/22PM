@@ -1,8 +1,8 @@
 import Dexie from 'dexie'
-import { RefreshTokenType, EditorPick } from '../types/api.type'
+import { EditorPick } from '../types/api.type'
 
 class XiaoyuzhouCache extends Dexie {
-    // tokens!: Dexie.Table<RefreshTokenType, number>
+    // tokens!: Dexie.Table<RefreshToken, number>
     editorpicks!: Dexie.Table<EditorPick, number>
 
     constructor() {

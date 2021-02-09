@@ -1,7 +1,18 @@
-export interface RefreshTokenType {
+import { AnyObject } from './common.type'
+
+export interface RefreshToken {
     'x-jike-access-token': string
-    success: 'true' | 'false'
     'x-jike-refresh-token': string
+}
+
+export interface RefreshTokenResponse extends RefreshToken {
+    success: 'true' | 'false'
+}
+
+export interface AuthError extends AnyObject {
+    success: boolean
+    code: number
+    toast: string
 }
 
 interface Image {

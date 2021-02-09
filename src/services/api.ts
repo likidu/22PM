@@ -6,13 +6,16 @@ import axios, {
     AxiosInstance,
 } from 'axios'
 
-import type {
+import {
     User,
     PodcastType,
-    RefreshTokenType,
+    RefreshToken,
+    RefreshTokenResponse,
     EpisodeType,
     EditorPick,
+    AuthError,
 } from '../types/api.type'
+import { AnyObject } from '../types/common.type'
 
 import { API_CONFIG } from './config'
 import { addEditorPicks, getEditorPicks } from './db'
@@ -23,6 +26,18 @@ declare module 'axios' {
     interface AxiosRequestConfig {
         retry?: boolean
     }
+}
+
+// Return the necessaray reponses
+interface ApiReponse {
+    config: AxiosRequestConfig
+    headers: AnyObject
+    data:
+        | {
+              data: AnyObject
+          }
+        | AnyObject
+    status: number
 }
 
 class XiaoyuzhouFmApi {
@@ -65,11 +80,17 @@ class XiaoyuzhouFmApi {
         return config
     }
 
-    // Xiaoyuzhou will return most reponses wrapped in a "data" object except for those like refresh token
-    private handleResponse = ({ data }: AxiosResponse) =>
-        // TODO: fix the type
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-member-access
-        'data' in data ? data.data : data
+    private handleResponse = (response: AxiosResponse) => {
+        const { config, headers, data, status } = <ApiReponse>response
+        // Login API should also return headers containing the tokens
+        if (config.url === '/v1/auth/loginOrSignUpWithSMS' && status === 200) {
+            const { user } = <{ user: User }>data.data
+            return { user, headers }
+        }
+
+        // Most reponses are wrapped in a "data" object except for those like refresh token
+        return 'data' in data ? data.data : data
+    }
 
     private handleReject = async (error: AxiosError) => {
         // Reject promise if it's a usual error
@@ -94,8 +115,6 @@ class XiaoyuzhouFmApi {
             if (refreshToken) {
                 const result = await this.appAuthTokensRefresh(refreshToken)
 
-                console.log(result)
-
                 if (JSON.parse(result.success)) {
                     // TODO: fix the type
                     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
@@ -103,6 +122,7 @@ class XiaoyuzhouFmApi {
                         'x-jike-access-token'
                     ] = result['x-jike-access-token']
 
+                    // TODO: use DB to store tokens
                     localStorage.setItem(
                         'access-token',
                         result['x-jike-access-token'],
@@ -117,11 +137,14 @@ class XiaoyuzhouFmApi {
         }
     }
 
-    private handleError = (error: AxiosError) => {
+    private handleError = <T>(error: AxiosError) => {
         if (error.response) {
-            console.log(error.response.data)
-            console.log(error.response.status)
-            console.log(error.response.headers)
+            const { data, status } = <{ data: T; status: number }>error.response
+            console.log(status)
+            console.log(data)
+
+            // console.log(headers)
+            return data
         } else {
             console.log(error.message)
         }
@@ -134,7 +157,7 @@ class XiaoyuzhouFmApi {
      */
     private appAuthTokensRefresh = (
         refreshToken: string,
-    ): AxiosPromise<RefreshTokenType> =>
+    ): AxiosPromise<RefreshTokenResponse> =>
         this.instance.post('/app_auth_tokens.refresh', '', {
             headers: {
                 'x-jike-refresh-token': refreshToken,
@@ -224,19 +247,37 @@ class XiaoyuzhouFmApi {
      * Login with SMS
      */
     public loginWithSMS = async (
-        mobile: string,
-        verify: string,
-    ): Promise<User> => {
+        mobilePhone: string,
+        verifyCode: string,
+    ): Promise<User | AuthError | undefined> => {
         const areaCode = 86
-        const result: { user: User } = await this.instance.post(
-            '/v1/auth/loginOrSignUpWithSMS',
-            {
-                mobilePhoneNumber: mobile,
+        // TODO: maybe try catch should move to Auth component?
+        try {
+            // Result: { user, headers }
+            const {
+                user,
+                headers,
+            }: {
+                user: User
+                headers: RefreshToken
+            } = await this.instance.post('/v1/auth/loginOrSignUpWithSMS', {
+                mobilePhoneNumber: mobilePhone,
                 areaCode: `+${areaCode.toString()}`,
-                verifyCode: verify,
-            },
-        )
-        return result.user
+                verifyCode,
+            })
+            // TODO: use DB to store tokens
+            localStorage.setItem('access-token', headers['x-jike-access-token'])
+            localStorage.setItem(
+                'refresh-token',
+                headers['x-jike-refresh-token'],
+            )
+            localStorage.setItem('authed', JSON.stringify(true))
+
+            return user
+        } catch (error) {
+            localStorage.setItem('authed', JSON.stringify(false))
+            return this.handleError<AuthError>(error)
+        }
     }
 }
 

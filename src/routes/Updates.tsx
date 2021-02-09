@@ -38,11 +38,21 @@ const Updates: FunctionalComponent<UpdatesProps> = ({
 
     const [showMenu] = usePopup<MenuType>(Menu)
 
+    const logout = () => {
+        localStorage.setItem('authed', JSON.stringify(false))
+        route('/', true)
+    }
+
     const menus = [
         {
             text: 'Subscription',
             key: 'subscription',
             action: () => route('/subscription', true),
+        },
+        {
+            text: 'Logout',
+            key: 'logout',
+            action: logout,
         },
         {
             text: 'About',

@@ -1,18 +1,17 @@
 import { Fragment, FunctionalComponent, h } from 'preact'
+import { route } from 'preact-router'
 import { useEffect, useRef, useState } from 'preact/hooks'
 import { Content } from '../components'
 import { useNavigation, useRange, useSoftkey } from '../hooks'
 import xiaoyuzhouFmApi from '../services/api'
+import { AuthError } from '../types/api.type'
 
-interface AuthProps {
-    hello: string
-}
-
-const Auth: FunctionalComponent<AuthProps> = ({ hello }: AuthProps) => {
+const Auth: FunctionalComponent = () => {
     const containerRef = useRef<HTMLDivElement>(null)
     const formRef = useRef<HTMLDivElement>(null)
-    const [mobilePhone, setMobilePhone] = useState('')
+    const [mobilePhone, setMobilePhone] = useState('13817930979')
     const [verifyCode, setVeifyCode] = useState('')
+    const [error, setError] = useState<AuthError>({} as never)
 
     const [currentStep, prevAuth, nextAuth] = useRange(0, 1)
     const [, setNavigation, getCurrent] = useNavigation(
@@ -21,6 +20,17 @@ const Auth: FunctionalComponent<AuthProps> = ({ hello }: AuthProps) => {
         formRef,
         'y',
     )
+
+    // TODO: use notification to show error message
+    const errorMessage = () => {
+        if (error) {
+            return (
+                <p class="text-red-500">
+                    {error.code}: {error.toast}
+                </p>
+            )
+        }
+    }
 
     // Auth step 1, send mobile phone
     const handleMobileInput = (ev: Event) => {
@@ -52,8 +62,16 @@ const Auth: FunctionalComponent<AuthProps> = ({ hello }: AuthProps) => {
     }
 
     const handleVerifyCode = async () => {
-        console.log('Verify code', verifyCode)
-        await xiaoyuzhouFmApi.loginWithSMS(mobilePhone, verifyCode)
+        const result = await xiaoyuzhouFmApi.loginWithSMS(
+            mobilePhone,
+            verifyCode,
+        )
+        // It means fail...
+        if (result && 'success' in result) {
+            setError(result)
+            return
+        }
+        route('/', true)
     }
 
     const onVerifyCode = () => {
@@ -124,6 +142,7 @@ const Auth: FunctionalComponent<AuthProps> = ({ hello }: AuthProps) => {
                         >
                             Login
                         </button>
+                        {errorMessage()}
                     </Fragment>
                 )}
             </div>
