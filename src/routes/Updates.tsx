@@ -15,6 +15,7 @@ import {
 } from '../components'
 
 import { EpisodeType } from '../types/api.type'
+import { PlayerEpisode } from '../types/player.type'
 
 interface UpdatesProps {
     onSwitch: () => void
@@ -28,7 +29,7 @@ const Updates: FunctionalComponent<UpdatesProps> = ({
     const menuRef = useRef<HTMLDivElement>(null)
     const [episodes, setEpisodes] = useState<EpisodeType[]>([])
 
-    const [player] = usePlayer()
+    const [player, setPlayerEpisode] = usePlayer()
     const [, setNavigation, getCurrent] = useNavigation(
         'Updates',
         containerRef,
@@ -39,7 +40,8 @@ const Updates: FunctionalComponent<UpdatesProps> = ({
     const [showMenu] = usePopup<MenuType>(Menu)
 
     const logout = () => {
-        localStorage.setItem('authed', JSON.stringify(false))
+        xiaoyuzhouFmApi.logout()
+        setPlayerEpisode({} as PlayerEpisode)
         route('/', true)
     }
 
@@ -88,7 +90,7 @@ const Updates: FunctionalComponent<UpdatesProps> = ({
             onKeyRight: () => showMenu({ menus, containerRef: menuRef }),
             onKeyArrowLeft: onSwitch,
         },
-        [episodes, player],
+        [episodes],
     )
 
     useEffect(() => {

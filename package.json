@@ -64,6 +64,8 @@
     "react-palette": "^1.0.2",
     "sirv-cli": "^1.0.10",
     "tailwindcss": "^2.0.2",
+    "tailwindcss-blend-mode": "^1.0.0",
+    "tailwindcss-gradients": "^3.0.0",
     "typescript": "^4.1.3",
     "webkit-line-clamp": "^1.2.2"
   }

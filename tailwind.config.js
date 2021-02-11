@@ -6,19 +6,26 @@ module.exports = {
             fontFamily: {
                 kaios: ['Open Sans'],
             },
+            fontSize: {
+                // 17px
+                base: '1.0625rem',
+                primary: '1.0625rem',
+                secondary: '.875rem',
+                tertiary: '.75rem',
+            },
             colors: {
-                // Base color: #57b1dc
+                // Base color: #23b5e1
                 shakespeare: {
-                    50: '#f7fbfd',
-                    100: '#eef7fc',
-                    200: '#d5ecf6',
-                    300: '#bce0f1',
-                    400: '#89c8e7',
-                    500: '#57b1dc',
-                    600: '#4e9fc6',
-                    700: '#4185a5',
-                    800: '#346a84',
-                    900: '#2b576c',
+                    50: '#f4fbfe',
+                    100: '#e9f8fc',
+                    200: '#c8edf8',
+                    300: '#a7e1f3',
+                    400: '#65cbea',
+                    500: '#23b5e1',
+                    600: '#20a3cb',
+                    700: '#1a88a9',
+                    800: '#156d87',
+                    900: '#11596e',
                 },
             },
             width: {
@@ -59,13 +66,34 @@ module.exports = {
                     '0 1px 3px 0 rgba(0, 0, 0, 0.32), 0 1px 2px 0 rgba(0, 0, 0, 0.24)',
             },
             zIndex: {
+                '-1': '-1',
                 100: 100,
                 200: 200,
+            },
+            linearGradientColors: {
+                'gray-cover': ['rgba(229, 231, 235) 0%', 'white 100%'],
+                'gray-strip': [
+                    'rgb(156, 163, 175)',
+                    'rgb(156, 163, 175) 2px',
+                    'white 2px',
+                    'white',
+                ],
+            },
+            repeatingLinearGradientDirections: theme =>
+                theme('linearGradientDirections'), // defaults to this value
+            repeatingLinearGradientColors: theme =>
+                theme('linearGradientColors'), // defaults to {}
+            repeatingLinearGradientLengths: {
+                '5px': '5px',
+                sm: '2px',
             },
         },
     },
     variants: {
         extend: {},
     },
-    plugins: [],
+    plugins: [
+        require('tailwindcss-gradients'),
+        require('tailwindcss-blend-mode')(),
+    ],
 }

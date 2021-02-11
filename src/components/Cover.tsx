@@ -20,7 +20,7 @@ export const Cover: FunctionalComponent<CoverProps> = ({
     progress,
 }: CoverProps) => {
     const headerRef = useRef<HTMLHeadingElement>(null)
-    const textRef = useRef<HTMLSpanElement>(null)
+    const textRef = useRef<HTMLParagraphElement>(null)
     useLineClamp(headerRef, 2)
     useLineClamp(textRef, 1)
 
@@ -30,12 +30,16 @@ export const Cover: FunctionalComponent<CoverProps> = ({
                 src={coverImage}
                 class="objec-fill w-36 max-w-xs rounded-lg shadow-xl mx-auto"
             />
-            <h4 ref={headerRef} class="text-white px-3 mt-4 mb-1">
+            <p ref={headerRef} class="text-primary text-white px-3 mt-4 mb-1">
                 {episodeTitle}
-            </h4>
-            <span ref={textRef} style={{ color: textColor }}>
+            </p>
+            <p
+                ref={textRef}
+                class="text-secondary"
+                style={{ color: textColor }}
+            >
                 {podcastTitle}
-            </span>
+            </p>
             <ProgressBar progress={progress} />
         </div>
     )

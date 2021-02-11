@@ -34,10 +34,14 @@ interface ApiReponse {
     headers: AnyObject
     data:
         | {
-              data: AnyObject
+              data: any
           }
-        | AnyObject
+        | any
     status: number
+}
+
+interface ResponseData extends AnyObject {
+    data?: any
 }
 
 class XiaoyuzhouFmApi {
@@ -81,14 +85,22 @@ class XiaoyuzhouFmApi {
     }
 
     private handleResponse = (response: AxiosResponse) => {
-        const { config, headers, data, status } = <ApiReponse>response
-        // Login API should also return headers containing the tokens
+        const { config, headers, data, status } = <
+            {
+                config: AxiosRequestConfig
+                headers: AnyObject
+                data: ResponseData
+                status: number
+            }
+        >response
+
         if (config.url === '/v1/auth/loginOrSignUpWithSMS' && status === 200) {
             const { user } = <{ user: User }>data.data
             return { user, headers }
         }
 
         // Most reponses are wrapped in a "data" object except for those like refresh token
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-return
         return 'data' in data ? data.data : data
     }
 
@@ -278,6 +290,12 @@ class XiaoyuzhouFmApi {
             localStorage.setItem('authed', JSON.stringify(false))
             return this.handleError<AuthError>(error)
         }
+    }
+
+    public logout = () => {
+        localStorage.removeItem('authed')
+        localStorage.removeItem('access-token')
+        localStorage.removeItem('refresh-token')
     }
 }
 

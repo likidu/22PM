@@ -2,7 +2,7 @@ import { FunctionalComponent, h } from 'preact'
 import { useEffect, useRef, useState } from 'preact/hooks'
 
 import { usePlayer } from '../hooks'
-import { PlayerState } from '../types/player.type'
+import { PlayerEpisode, PlayerState } from '../types/player.type'
 
 type PlayerProps = PlayerState
 
@@ -25,7 +25,7 @@ export const Player: FunctionalComponent<PlayerProps> = ({
 
     useEffect(() => {
         if (audioEl) {
-            contextPlaying ? void audioEl.play() : void audioEl.pause()
+            contextPlaying ? void audioEl.play() : audioEl.pause()
         }
     }, [contextPlaying])
 
@@ -37,8 +37,18 @@ export const Player: FunctionalComponent<PlayerProps> = ({
     useEffect(() => {
         if (audioEl) {
             audioEl.mozAudioChannelType = 'content'
+
             audioEl.onerror = (ev: Event | string) =>
                 console.error('Audio error', ev)
+
+            audioEl.onended = () => {
+                setEpisode({} as PlayerEpisode)
+            }
+
+            audioEl.onseeking = () => audioEl.pause()
+
+            audioEl.onseeked = () => void audioEl.play()
+
             audioEl.ontimeupdate = () => {
                 const currentTime = audioEl.currentTime
                 if (currentTime !== contextProgress) setProgress(currentTime)
@@ -46,6 +56,7 @@ export const Player: FunctionalComponent<PlayerProps> = ({
         }
     }, [episode])
 
+    // Dispatch progress to reducer
     useEffect(() => {
         setPlayerProgress(progress)
     }, [progress])

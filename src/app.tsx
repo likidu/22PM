@@ -8,20 +8,12 @@ import Auth from './routes/Auth'
 import Episode from './routes/Episode'
 import Subscription from './routes/Subscription'
 import NotFound from './routes/NotFound'
-import { Player, Popup, Softkey } from './components'
+import { Background, Player, Popup, Softkey } from './components'
 
-import {
-    initialPlayerState,
-    initialSoftkeyState,
-    INIT_ACCESS_TOKEN,
-    INIT_REFRESH_TOKEN,
-} from './services/config'
+import { initialPlayerState, initialSoftkeyState } from './services/config'
 import { PlayerContext, PopupContext, SoftkeyContext } from './contexts'
 import { reducer } from './reducers'
 import { InitialPopupState, PopupState } from './types/popup.type'
-
-// localStorage.setItem('access-token', INIT_ACCESS_TOKEN)
-// localStorage.setItem('refresh-token', INIT_REFRESH_TOKEN)
 
 const App: FunctionalComponent = () => {
     const initialState = {
@@ -63,6 +55,7 @@ const App: FunctionalComponent = () => {
                         <Player {...player} />
                         <Softkey {...softkey.current} />
                         <Popup popups={popupState} />
+                        <Background />
                     </div>
                 </PopupContext.Provider>
             </SoftkeyContext.Provider>

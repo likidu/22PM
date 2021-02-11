@@ -1,7 +1,7 @@
 import { Fragment, FunctionalComponent, h } from 'preact'
 import { route } from 'preact-router'
 import { useEffect, useRef, useState } from 'preact/hooks'
-import { Content } from '../components'
+import { Button, Content, Input, List, Logo } from '../components'
 import { useNavigation, useRange, useSoftkey } from '../hooks'
 import xiaoyuzhouFmApi from '../services/api'
 import { AuthError } from '../types/api.type'
@@ -9,7 +9,7 @@ import { AuthError } from '../types/api.type'
 const Auth: FunctionalComponent = () => {
     const containerRef = useRef<HTMLDivElement>(null)
     const formRef = useRef<HTMLDivElement>(null)
-    const [mobilePhone, setMobilePhone] = useState('13817930979')
+    const [mobilePhone, setMobilePhone] = useState('17601270092')
     const [verifyCode, setVeifyCode] = useState('')
     const [error, setError] = useState<AuthError>({} as never)
 
@@ -23,9 +23,9 @@ const Auth: FunctionalComponent = () => {
 
     // TODO: use notification to show error message
     const errorMessage = () => {
-        if (error) {
+        if (error.code) {
             return (
-                <p class="text-red-500">
+                <p class="text-secondary text-red-500 text-center">
                     {error.code}: {error.toast}
                 </p>
             )
@@ -41,7 +41,6 @@ const Auth: FunctionalComponent = () => {
     }
 
     const handleSendCode = async () => {
-        console.log('Mobile', mobilePhone)
         await xiaoyuzhouFmApi.sendCode(mobilePhone)
     }
 
@@ -86,8 +85,10 @@ const Auth: FunctionalComponent = () => {
         {
             center: 'Select',
             left: 'Back',
+            right: ' ',
             onKeyCenter: onVerifyCode,
             onKeyLeft: prevAuth,
+            onKeyRight: () => true,
         },
     ]
 
@@ -97,55 +98,54 @@ const Auth: FunctionalComponent = () => {
         currentStep,
     ])
 
+    useEffect(() => {
+        console.log('handleSendCode triggered')
+    }, [handleSendCode])
+
     useEffect(() => setNavigation(0), [currentStep])
 
     return (
         <Content containerRef={containerRef}>
-            <div ref={formRef}>
+            <header class="text-center">
+                <Logo size={60} />
+                <h1 class="text-xl">22PM</h1>
+                <h4 class="text-bold text-gray-500">小宇宙 on KaiOS</h4>
+            </header>
+            <main ref={formRef}>
                 {currentStep === 0 && (
                     <Fragment>
-                        <input
-                            type="tel"
+                        <Input
+                            label="Mobile"
                             name="mobilePhone"
-                            id="mobilePhone"
-                            placeholder="Mobile phone"
+                            placeholder="Mobile Phone..."
                             value={mobilePhone}
-                            onInput={handleMobileInput}
-                            data-selectable
+                            handleInput={handleMobileInput}
                         />
-                        <button
-                            type="button"
-                            onClick={handleSendCode}
-                            data-selectable
-                            data-selected-uid="send-code"
-                        >
-                            Get verification code
-                        </button>
+                        <Button
+                            text="Get verification code"
+                            handleClick={handleSendCode}
+                            uid="send-code"
+                        />
                     </Fragment>
                 )}
                 {currentStep === 1 && (
                     <Fragment>
-                        <input
-                            type="text"
+                        <Input
+                            label="Verify Code"
                             name="verifyCode"
-                            id="verifyCode"
-                            placeholder="Verify Code"
+                            placeholder="Verify Code..."
                             value={verifyCode}
-                            onInput={handleVerifyInput}
-                            data-selectable
+                            handleInput={handleVerifyInput}
                         />
-                        <button
-                            type="button"
-                            onClick={handleVerifyCode}
-                            data-selectable
-                            data-selected-uid="verify-code"
-                        >
-                            Login
-                        </button>
+                        <Button
+                            text="Login"
+                            handleClick={handleVerifyCode}
+                            uid="verify-code"
+                        />
                         {errorMessage()}
                     </Fragment>
                 )}
-            </div>
+            </main>
         </Content>
     )
 }

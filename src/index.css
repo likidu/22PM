@@ -1,12 +1,33 @@
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap');
 
 @tailwind base;
+
+@layer base {
+    h1 {
+        @apply text-base;
+    }
+    h2 {
+        @apply font-semibold;
+    }
+    h3 {
+        @apply text-sm;
+    }
+    h4 {
+        @apply text-sm;
+    }
+    h5 {
+        @apply font-semibold text-sm;
+    }
+    a {
+        @apply text-blue-600 underline;
+    }
+}
+
 @tailwind components;
 @tailwind utilities;
 
 html,
 body {
-    background: #fafafa;
     font-family: 'Helvetica Neue', arial, sans-serif;
     font-weight: 400;
     color: #444;
@@ -15,7 +36,7 @@ body {
 }
 
 [nav-selected='true'] {
-    @apply text-white bg-shakespeare-600;
+    @apply text-white bg-shakespeare-500 border-transparent;
 }
 
 /* Softkey height: 30px */
@@ -29,7 +50,7 @@ body {
 }
 
 .shader {
-    @apply absolute inset-0 bg-black opacity-90;
+    @apply absolute inset-0 bg-black opacity-95;
 }
 
 .active-tab {

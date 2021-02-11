@@ -13,5 +13,5 @@ export const useLineClamp = <T extends HTMLElement>(
 ): void => {
     useEffect(() => {
         if (ref.current) webkitLineClamp(ref.current, lines)
-    }, [ref, lines])
+    }, [])
 }

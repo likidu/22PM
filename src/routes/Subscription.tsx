@@ -15,11 +15,15 @@ const Subscription: FunctionalComponent = () => {
 
     const onClose = () => route('/updates', true)
 
-    useSoftkey('Subscription', {
-        right: 'Close',
-        onKeyRight: onClose,
-        onKeyBackspace: onClose,
-    })
+    useSoftkey(
+        'Subscription',
+        {
+            right: 'Close',
+            onKeyRight: onClose,
+            onKeyBackspace: onClose,
+        },
+        [podcasts],
+    )
 
     useEffect(() => {
         void (async () => {
