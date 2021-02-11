@@ -1,15 +1,20 @@
 import { Fragment, FunctionalComponent, h } from 'preact'
 import { route } from 'preact-router'
 import { useEffect, useRef, useState } from 'preact/hooks'
-import { Button, Content, Input, List, Logo } from '../components'
+import { Button, Content, Input, Logo } from '../components'
 import { useNavigation, useRange, useSoftkey } from '../hooks'
 import xiaoyuzhouFmApi from '../services/api'
 import { AuthError } from '../types/api.type'
 
 const Auth: FunctionalComponent = () => {
+    const resendCodeTimeout = 20
+
     const containerRef = useRef<HTMLDivElement>(null)
     const formRef = useRef<HTMLDivElement>(null)
+    const buttonRef = useRef<HTMLButtonElement>(null)
     const [mobilePhone, setMobilePhone] = useState('17601270092')
+    const [codeSent, setCodeSent] = useState(false)
+    const [resendCount, setResendCount] = useState(resendCodeTimeout)
     const [verifyCode, setVeifyCode] = useState('')
     const [error, setError] = useState<AuthError>({} as never)
 
@@ -41,7 +46,8 @@ const Auth: FunctionalComponent = () => {
     }
 
     const handleSendCode = async () => {
-        await xiaoyuzhouFmApi.sendCode(mobilePhone)
+        // await xiaoyuzhouFmApi.sendCode(mobilePhone)
+        setCodeSent(true)
     }
 
     const onSendCode = () => {
@@ -99,8 +105,25 @@ const Auth: FunctionalComponent = () => {
     ])
 
     useEffect(() => {
-        console.log('handleSendCode triggered')
-    }, [handleSendCode])
+        let counter: NodeJS.Timeout
+        let timer: NodeJS.Timeout
+        if (codeSent) {
+            buttonRef.current.setAttribute('disabled', 'disabled')
+            counter = setInterval(() => {
+                setResendCount(resendCount => resendCount - 1)
+            }, 1000)
+            timer = setTimeout(() => {
+                buttonRef.current.removeAttribute('disabled')
+                clearInterval(counter)
+                setCodeSent(false)
+                setResendCount(3)
+            }, resendCodeTimeout * 1000)
+        }
+        return () => {
+            clearInterval(counter)
+            clearTimeout(timer)
+        }
+    }, [codeSent])
 
     useEffect(() => setNavigation(0), [currentStep])
 
@@ -122,7 +145,14 @@ const Auth: FunctionalComponent = () => {
                             handleInput={handleMobileInput}
                         />
                         <Button
-                            text="Get verification code"
+                            containerRef={buttonRef}
+                            text={
+                                codeSent
+                                    ? `Wait for ${JSON.stringify(
+                                          resendCount,
+                                      )}...`
+                                    : 'Get verify code'
+                            }
                             handleClick={handleSendCode}
                             uid="send-code"
                         />
