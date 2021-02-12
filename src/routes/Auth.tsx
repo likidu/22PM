@@ -1,4 +1,4 @@
-import { Fragment, FunctionalComponent, h } from 'preact'
+import { FunctionalComponent, h } from 'preact'
 import { route } from 'preact-router'
 import { useEffect, useRef, useState } from 'preact/hooks'
 import { Button, Content, Input, Logo } from '../components'
@@ -7,7 +7,7 @@ import xiaoyuzhouFmApi from '../services/api'
 import { AuthError } from '../types/api.type'
 
 const Auth: FunctionalComponent = () => {
-    const resendCodeTimeout = 20
+    const resendCodeTimeout = 3
 
     const containerRef = useRef<HTMLDivElement>(null)
     const formRef = useRef<HTMLDivElement>(null)
@@ -53,8 +53,12 @@ const Auth: FunctionalComponent = () => {
     const onSendCode = () => {
         const { uid } = getCurrent()
         if (uid === 'send-code') {
-            void handleSendCode()
-            nextAuth()
+            console.log('condSent', codeSent)
+
+            if (!codeSent) {
+                void handleSendCode()
+                nextAuth()
+            }
         }
     }
 
@@ -86,6 +90,43 @@ const Auth: FunctionalComponent = () => {
         }
     }
 
+    // Params depending on the current step
+    const stepConfig = [
+        {
+            input: {
+                label: 'Mobile',
+                name: 'mobilePhone',
+                placeholder: 'Mobile Phone...',
+                value: mobilePhone,
+                handleInput: handleMobileInput,
+            },
+            button: {
+                containerRef: buttonRef,
+                text: codeSent
+                    ? `Wait for ${JSON.stringify(resendCount)}...`
+                    : 'Get verify code',
+                handleClick: handleSendCode,
+                uid: 'send-code',
+            },
+        },
+        {
+            input: {
+                label: 'Verify Code',
+                name: 'verifyCode',
+                placeholder: 'Verify Code...',
+                value: verifyCode,
+                handleInput: handleVerifyInput,
+            },
+            button: {
+                containerRef: undefined,
+                text: 'Login',
+                handleClick: handleVerifyCode,
+                uid: 'verify-code',
+            },
+        },
+    ]
+
+    // Softkey depending on the current step
     const softkeyConfig = [
         { center: 'Select', left: '', onKeyCenter: onSendCode },
         {
@@ -105,25 +146,29 @@ const Auth: FunctionalComponent = () => {
     ])
 
     useEffect(() => {
-        let counter: NodeJS.Timeout
-        let timer: NodeJS.Timeout
-        if (codeSent) {
-            buttonRef.current.setAttribute('disabled', 'disabled')
-            counter = setInterval(() => {
-                setResendCount(resendCount => resendCount - 1)
-            }, 1000)
-            timer = setTimeout(() => {
-                buttonRef.current.removeAttribute('disabled')
+        if (currentStep === 0) {
+            let counter: NodeJS.Timeout
+            let timer: NodeJS.Timeout
+            if (codeSent) {
+                buttonRef.current.setAttribute('disabled', 'disabled')
+                counter = setInterval(() => {
+                    setResendCount(resendCount => resendCount - 1)
+                }, 1000)
+                timer = setTimeout(() => {
+                    // Reset everything
+                    buttonRef.current.removeAttribute('disabled')
+                    clearInterval(counter)
+
+                    setResendCount(resendCodeTimeout)
+                    setCodeSent(false)
+                }, resendCodeTimeout * 1000)
+            }
+            return () => {
                 clearInterval(counter)
-                setCodeSent(false)
-                setResendCount(3)
-            }, resendCodeTimeout * 1000)
+                clearTimeout(timer)
+            }
         }
-        return () => {
-            clearInterval(counter)
-            clearTimeout(timer)
-        }
-    }, [codeSent])
+    }, [currentStep])
 
     useEffect(() => setNavigation(0), [currentStep])
 
@@ -135,46 +180,20 @@ const Auth: FunctionalComponent = () => {
                 <h4 class="text-bold text-gray-500">小宇宙 on KaiOS</h4>
             </header>
             <main ref={formRef}>
-                {currentStep === 0 && (
-                    <Fragment>
-                        <Input
-                            label="Mobile"
-                            name="mobilePhone"
-                            placeholder="Mobile Phone..."
-                            value={mobilePhone}
-                            handleInput={handleMobileInput}
-                        />
-                        <Button
-                            containerRef={buttonRef}
-                            text={
-                                codeSent
-                                    ? `Wait for ${JSON.stringify(
-                                          resendCount,
-                                      )}...`
-                                    : 'Get verify code'
-                            }
-                            handleClick={handleSendCode}
-                            uid="send-code"
-                        />
-                    </Fragment>
-                )}
-                {currentStep === 1 && (
-                    <Fragment>
-                        <Input
-                            label="Verify Code"
-                            name="verifyCode"
-                            placeholder="Verify Code..."
-                            value={verifyCode}
-                            handleInput={handleVerifyInput}
-                        />
-                        <Button
-                            text="Login"
-                            handleClick={handleVerifyCode}
-                            uid="verify-code"
-                        />
-                        {errorMessage()}
-                    </Fragment>
-                )}
+                <Input
+                    label={stepConfig[currentStep].input.label}
+                    name={stepConfig[currentStep].input.name}
+                    placeholder={stepConfig[currentStep].input.placeholder}
+                    value={stepConfig[currentStep].input.value}
+                    handleInput={stepConfig[currentStep].input.handleInput}
+                />
+                <Button
+                    containerRef={stepConfig[currentStep].button.containerRef}
+                    text={stepConfig[currentStep].button.text}
+                    handleClick={stepConfig[currentStep].button.handleClick}
+                    uid={stepConfig[currentStep].button.uid}
+                />
+                {errorMessage()}
             </main>
         </Content>
     )
