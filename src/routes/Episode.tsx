@@ -58,6 +58,8 @@ const Episode: FunctionalComponent<EpisodeProps> = ({ eid }: EpisodeProps) => {
                 <Cover
                     episodeTitle={episode.title}
                     podcastTitle={episode.podcast.title}
+                    current={progress}
+                    duration={episode.duration}
                     coverImage={
                         episode.image ? episode.image.smallPicUrl : placeholder
                     }
