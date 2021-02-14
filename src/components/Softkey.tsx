@@ -106,7 +106,7 @@ export const Softkey: FunctionalComponent<SoftkeyConfig> = ({
         typeof left === 'object' ||
         typeof right === 'object'
             ? 'px-3 pb-3'
-            : 'bg-white border-t border-gray-200'
+            : 'px-1 bg-white border-t border-gray-200'
 
     const parseKey = (ev: KeyboardEvent) => {
         // Simulate soft keys for testing purposes

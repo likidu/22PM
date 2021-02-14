@@ -28,7 +28,7 @@ const Auth: FunctionalComponent = () => {
 
     // TODO: use notification to show error message
     const errorMessage = () => {
-        if (error.code) {
+        if (error.code && currentStep === 1) {
             return (
                 <p class="text-secondary text-red-500 text-center">
                     {error.code}: {error.toast}
@@ -46,20 +46,16 @@ const Auth: FunctionalComponent = () => {
     }
 
     const handleSendCode = async () => {
-        // await xiaoyuzhouFmApi.sendCode(mobilePhone)
-        setCodeSent(true)
+        if (!codeSent) {
+            await xiaoyuzhouFmApi.sendCode(mobilePhone)
+            setCodeSent(true)
+            nextAuth()
+        }
     }
 
     const onSendCode = () => {
         const { uid } = getCurrent()
-        if (uid === 'send-code') {
-            console.log('condSent', codeSent)
-
-            if (!codeSent) {
-                void handleSendCode()
-                nextAuth()
-            }
-        }
+        if (uid === 'send-code') void handleSendCode()
     }
 
     // Auth step 2: verify code
@@ -85,9 +81,7 @@ const Auth: FunctionalComponent = () => {
 
     const onVerifyCode = () => {
         const { uid } = getCurrent()
-        if (uid === 'verify-code') {
-            void handleVerifyCode()
-        }
+        if (uid === 'verify-code') void handleVerifyCode()
     }
 
     // Params depending on the current step
