@@ -1,12 +1,10 @@
 import { FunctionalComponent } from 'preact'
+import { AnyObject, CSSProperties } from './common.type'
 
-export type InitialPopupState = {
-    [key: string]: unknown
-}
+export type InitialPopupState = AnyObject
 
-export interface PopupOptions {
+export interface PopupOptions extends AnyObject {
     stack: boolean
-    [key: string]: unknown
 }
 
 export interface PopupState<T> {
@@ -16,9 +14,7 @@ export interface PopupState<T> {
         close: () => void
         closeAll: () => void
     }
-    // TODO: should use CSSProperties
-    style: {
-        [key: string]: string | number | null | undefined
-    }
+    // TODO: should use standard CSSProperties
+    style: CSSProperties
     options: PopupOptions
 }

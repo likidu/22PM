@@ -1,12 +1,11 @@
 import { FunctionalComponent, RefObject, h } from 'preact'
+import { CSSProperties } from '../types/common.type'
 
 interface ContentProps {
     containerRef: RefObject<HTMLDivElement>
     children: JSX.Element | JSX.Element[]
-    // TODO: should use CSSProperties
-    style?: {
-        [key: string]: string | number | null | undefined
-    }
+    // TODO: should use standard CSSProperties
+    style?: CSSProperties
 }
 
 export const Content: FunctionalComponent<ContentProps> = ({

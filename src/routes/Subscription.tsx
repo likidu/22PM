@@ -1,32 +1,36 @@
 import { FunctionalComponent, h } from 'preact'
 import { useEffect, useRef, useState } from 'preact/hooks'
 import { route } from 'preact-router'
-import { useSoftkey } from '../hooks'
+import { useNavigation, useSoftkey } from '../hooks'
 
 import xiaoyuzhouFmApi from '../services/api'
 import { Content, List, ListItem } from '../components'
 
 import { PodcastType } from '../types/api.type'
 
-interface SubscriptionProps {
-    onSwitch: () => void
-}
-
-const Subscription: FunctionalComponent<SubscriptionProps> = ({
-    onSwitch,
-}: SubscriptionProps) => {
+const Subscription: FunctionalComponent = () => {
     const containerRef = useRef<HTMLDivElement>(null)
     const listRef = useRef<HTMLDivElement>(null)
     const [podcasts, setPodcasts] = useState<PodcastType[]>([])
 
+    const [, setNavigation, getCurrent] = useNavigation(
+        'Subscription',
+        containerRef,
+        listRef,
+        'y',
+    )
+
     const onClose = () => route('/updates', true)
 
-    useSoftkey('Subscription', {
-        right: 'Close',
-        onKeyRight: onClose,
-        onKeyArrowLeft: onSwitch,
-        onKeyBackspace: onClose,
-    })
+    useSoftkey(
+        'Subscription',
+        {
+            right: 'Close',
+            onKeyRight: onClose,
+            onKeyBackspace: onClose,
+        },
+        [podcasts],
+    )
 
     useEffect(() => {
         void (async () => {
@@ -34,6 +38,8 @@ const Subscription: FunctionalComponent<SubscriptionProps> = ({
             setPodcasts(result)
         })()
     }, [])
+
+    useEffect(() => setNavigation(0), [podcasts])
 
     return (
         <Content containerRef={containerRef}>

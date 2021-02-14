@@ -97,7 +97,7 @@ const Discovery: FunctionalComponent<DiscoveryProps> = ({
             onKeyRight: () => console.log('Discovery onKeyRight'),
             onKeyArrowRight: onSwitch,
         },
-        [editorPicks, player],
+        [editorPicks],
     )
 
     useEffect(() => {

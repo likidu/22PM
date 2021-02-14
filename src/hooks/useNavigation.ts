@@ -64,6 +64,15 @@ export const useNavigation = (
         return selectElement(allElements[setIndex] || allElements[0], setIndex)
     }
 
+    const focusElement = (selected: boolean, el: HTMLInputElement) => {
+        if (selected) {
+            el.focus()
+            el.selectionStart = el.selectionEnd = el.value.length
+        } else {
+            el.blur()
+        }
+    }
+
     const selectElement = (selectElement: HTMLElement, setIndex = 0) => {
         if (selectElement) {
             ;[].forEach.call(
@@ -75,18 +84,23 @@ export const useNavigation = (
                         selectThisElement ? 'true' : 'false',
                     )
                     element.setAttribute('nav-index', index.toString())
+
                     if (
                         element.nodeName === 'INPUT' ||
                         element.nodeName === 'TEXTAREA'
                     ) {
-                        const el = <HTMLInputElement>element
-                        if (selectThisElement) {
-                            el.focus()
-                            el.selectionStart = el.selectionEnd =
-                                el.value.length
-                        } else {
-                            el.blur()
-                        }
+                        focusElement(
+                            selectThisElement,
+                            <HTMLInputElement>element,
+                        )
+                    }
+                    if (element.getElementsByTagName('INPUT').length > 0) {
+                        focusElement(
+                            selectThisElement,
+                            <HTMLInputElement>(
+                                element.getElementsByTagName('INPUT')[0]
+                            ),
+                        )
                     }
                 },
             )

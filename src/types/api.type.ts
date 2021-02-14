@@ -1,7 +1,18 @@
-export interface RefreshTokenType {
+import { AnyObject } from './common.type'
+
+export interface RefreshToken {
     'x-jike-access-token': string
-    success: 'true' | 'false'
     'x-jike-refresh-token': string
+}
+
+export interface RefreshTokenResponse extends RefreshToken {
+    success: 'true' | 'false'
+}
+
+export interface AuthError extends AnyObject {
+    success: boolean
+    code: number
+    toast: string
 }
 
 interface Image {
@@ -10,10 +21,6 @@ interface Image {
     middlePicUrl: string
     smallPicUrl: string
     thumbnailUrl: string
-}
-
-interface Avatar {
-    picture: Image
 }
 
 export interface Mobile {
@@ -25,7 +32,9 @@ export interface Mobile {
 export interface User {
     type: 'USER'
     uid: string
-    avatar: Avatar
+    avatar: {
+        picture: Image
+    }
     nickname: string
     isNicknameSet: boolean
     authorship: []

@@ -13,9 +13,9 @@ const SoftkeyButton: FunctionalComponent<SoftkeyButtonProps> = ({
     content,
 }: SoftkeyButtonProps) => {
     return (
-        <label class={className} onClick={handler}>
+        <h5 class={className} onClick={handler}>
             {content}
-        </label>
+        </h5>
     )
 }
 
@@ -106,7 +106,7 @@ export const Softkey: FunctionalComponent<SoftkeyConfig> = ({
         typeof left === 'object' ||
         typeof right === 'object'
             ? 'px-3 pb-3'
-            : 'bg-white border-t border-gray-200'
+            : 'px-1 bg-white border-t border-gray-200'
 
     const parseKey = (ev: KeyboardEvent) => {
         // Simulate soft keys for testing purposes
@@ -153,7 +153,7 @@ export const Softkey: FunctionalComponent<SoftkeyConfig> = ({
             {center && onKeyCenter && (
                 <SoftkeyButton
                     key="center"
-                    className="flex justify-center font-bold text-center min-w-1/4 uppercase"
+                    className="flex justify-center font-bold text-center min-w-1/4 uppercase mx-auto"
                     handler={onKeyCenter}
                     content={center}
                 />

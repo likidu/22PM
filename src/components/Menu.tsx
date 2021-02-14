@@ -44,10 +44,13 @@ export const Menu: FunctionalComponent<MenuProps> = ({
         }
     }
 
+    // TODO: setting left key only for alignment
     useSoftkey('Menu', {
         center: 'Select',
+        left: ' ',
         right: 'Close',
         onKeyCenter,
+        onKeyLeft: () => true,
         onKeyRight: close,
     })
 
@@ -56,7 +59,7 @@ export const Menu: FunctionalComponent<MenuProps> = ({
     return (
         <div id="menu" ref={containerRef}>
             <h4 class="px-3 py-1 font-bold text-white">Options</h4>
-            <List containerRef={listRef}>
+            <List containerRef={listRef} className="rounded-t-md mx-3 bg-white">
                 {menus && menus.length > 0 ? (
                     menus.map((menu, index) => (
                         <ListItem key={index} text={menu.text} uid={menu.key} />

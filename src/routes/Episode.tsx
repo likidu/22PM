@@ -16,6 +16,7 @@ import {
 import { Details } from '../components/Details'
 
 import Palette from 'react-palette'
+import { route } from 'preact-router'
 
 interface EpisodeProps {
     eid: string
@@ -34,7 +35,7 @@ const Episode: FunctionalComponent<EpisodeProps> = ({ eid }: EpisodeProps) => {
 
     const [episode, setEpisode] = useState<EpisodeType>({} as never)
     const [playing, setPlaying] = useState(player.playing)
-    const [progress, setProgress] = useState(player.progress)
+    const [progress, setProgress] = useState(0)
     const [skip, setSkip] = useState(false)
     const [detailedView, setDetailedView] = useState(false)
 
@@ -95,7 +96,7 @@ const Episode: FunctionalComponent<EpisodeProps> = ({ eid }: EpisodeProps) => {
             onKeyCenter,
             onKeyLeft: () => setDetailedView(detailedView => !detailedView),
             onKeyRight: () => console.log('Episode onKeyRight'),
-            onKeyBackspace: () => history.back(),
+            onKeyBackspace: () => route('/'),
             onKeyArrowUp: () => volume.requestUp(),
             onKeyArrowDown: () => volume.requestDown(),
             onKeyArrowLeft,

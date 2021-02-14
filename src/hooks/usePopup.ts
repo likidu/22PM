@@ -1,10 +1,12 @@
 import { FunctionalComponent } from 'preact'
 import { useContext } from 'preact/hooks'
 import { PopupContext } from '../contexts'
+import { CSSProperties } from '../types/common.type'
 import { PopupOptions, PopupState } from '../types/popup.type'
 
 export const usePopup = <T>(
     component: FunctionalComponent<T>,
+    style: CSSProperties = {},
     options: PopupOptions = <PopupOptions>{},
 ): [(props: T) => void] => {
     const { setPopupState } = useContext(PopupContext)
@@ -32,6 +34,7 @@ export const usePopup = <T>(
                     close,
                     closeAll,
                 },
+                style,
                 options,
             }
             if (options.stack) {
