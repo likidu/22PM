@@ -19,7 +19,7 @@
         @apply font-semibold text-sm;
     }
     a {
-        @apply text-blue-600 underline;
+        @apply text-shakespeare-700 underline;
     }
 }
 
@@ -53,6 +53,10 @@ body {
     @apply absolute inset-0 bg-black opacity-95;
 }
 
-.active-tab {
-    @apply font-bold;
+.tab {
+    @apply text-secondary text-gray-400 px-2 no-underline;
+}
+
+.tab-active {
+    @apply text-gray-700;
 }

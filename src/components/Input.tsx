@@ -1,6 +1,7 @@
-import { FunctionalComponent, h, RefObject } from 'preact'
+import { FunctionalComponent, h } from 'preact'
 
 interface InputProps {
+    type?: string
     label: string
     name: string
     placeholder: string
@@ -9,6 +10,7 @@ interface InputProps {
 }
 
 export const Input: FunctionalComponent<InputProps> = ({
+    type = 'text',
     label,
     name,
     placeholder,
@@ -19,7 +21,7 @@ export const Input: FunctionalComponent<InputProps> = ({
         <div class="px-3 py-1.5" data-selectable>
             <label class="text-secondary">{label}</label>
             <input
-                type="text"
+                type={type}
                 name={name}
                 id={name}
                 placeholder={placeholder}

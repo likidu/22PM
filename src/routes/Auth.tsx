@@ -175,6 +175,7 @@ const Auth: FunctionalComponent = () => {
             </header>
             <main ref={formRef}>
                 <Input
+                    type="number"
                     label={stepConfig[currentStep].input.label}
                     name={stepConfig[currentStep].input.name}
                     placeholder={stepConfig[currentStep].input.placeholder}

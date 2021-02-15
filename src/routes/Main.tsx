@@ -4,28 +4,19 @@ import { Link } from 'preact-router/match'
 
 import Discovery from './Discovery'
 import Updates from './Updates'
+import { Tab } from '../components'
 
 const Main: FunctionalComponent = () => {
     return (
         <Fragment>
-            <header class="text-center uppercase">
-                <nav>
-                    <Link
-                        activeClassName="active-tab"
-                        class="text-secondary px-2"
-                        href="/"
-                    >
-                        Discovery
-                    </Link>
-                    <Link
-                        activeClassName="active-tab"
-                        class="text-secondary px-2"
-                        href="/updates"
-                    >
-                        Updates
-                    </Link>
-                </nav>
-            </header>
+            <Tab>
+                <Link activeClassName="tab-active" class="tab" href="/">
+                    Discovery
+                </Link>
+                <Link activeClassName="tab-active" class="tab" href="/updates">
+                    Updates
+                </Link>
+            </Tab>
             <Router>
                 <Discovery
                     path="/"

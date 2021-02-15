@@ -71,7 +71,11 @@ module.exports = {
                 200: 200,
             },
             linearGradientColors: {
-                'gray-cover': ['rgba(229, 231, 235) 0%', 'white 100%'],
+                'gray-cover': [
+                    'rgba(229, 231, 235) 0%',
+                    'white 70%',
+                    'white 100%',
+                ],
                 'gray-strip': [
                     'rgb(156, 163, 175)',
                     'rgb(156, 163, 175) 2px',
